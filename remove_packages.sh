@@ -5,6 +5,12 @@
 # Then, it uses 'apt' and 'dpkg' to remove said packages along with a list
 # of default bad packages
 
+RED="31"
+GREEN="32"
+BOLDGREEN="\e[1;${GREEN}m"
+BOLDRED="\e[1;${RED}m"
+ENDCOLOR="\e[0m"
+
 BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*"
     "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*"
     "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*"
@@ -26,9 +32,9 @@ function remove_apt() {
     for PACKAGE in "$@"; do
         apt purge "$PACKAGE" 1> /dev/null # To debug, remove redirect
         if [ "$?" -eq "0" ]; then
-            echo "apt removed: ${PACKAGE}"
+            echo -e "${BOLDGREEN}apt removed: ${PACKAGE} ${ENDCOLOR}"
         else
-            echo "apt failed to remove ${PACKAGE}"
+            echo -e "${BOLDRED}apt failed to remove ${PACKAGE} ${ENDCOLOR}"
             FAILED=$true
         fi
     done
@@ -36,7 +42,23 @@ function remove_apt() {
         return 1
     fi
 }
-
+#######################################
+# Checks the exit code of last command and reports success or failure
+# Globals:
+#     BAD_PACKAGES
+# Arguments:
+#     command name
+# Outputs:
+#     Writes output to stdout
+# Returns:
+#     0 if all packages removed successfully, 1 if failed.
+#######################################
+function check_status() {
+if [ "$?" -eq "0" ]; then
+    echo "dpkg wrote installed packages to 'installed_packages.txt'."
+else
+    echo "dpkg failed to list packages"
+fi
 # Remove default bad packages
 remove_apt "$BAD_PACKAGES"
 
