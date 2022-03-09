@@ -21,7 +21,7 @@ BAD_PACKAGES="wireshark "
 function remove_apt() {
     local FAILED=$false
     for PACKAGE in "$@"; do
-    apt purge "$PACKAGE"
+    apt purge "$PACKAGE" 1> /dev/null
     if [ "$?" -eq "0" ]; then
         echo "apt removed: ${PACKAGE}"
     else
@@ -32,7 +32,8 @@ function remove_apt() {
     return 1
 }
 
-#
+# 
+
 # Remove broken packages
 apt-get clean
 apt-get autoremove
