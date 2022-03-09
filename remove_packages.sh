@@ -5,7 +5,10 @@
 # Then, it uses 'apt' and 'dpkg' to remove said packages along with a list
 # of default bad packages
 
-BAD_PACKAGES="wireshark "
+BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*" 
+    "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" 
+    "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*"
+    "*netcat*" "*weplab*" "pyrit" "irssi")
 
 #######################################
 # Remove packages with 'apt'
@@ -34,13 +37,22 @@ function remove_apt() {
     fi
 }
 
-# 
+# Remove default bad packages
+remove_apt "$BAD_PACKAGES"
+
+# Write installed packages to file
 dpkg --list > installed_packages.txt
 if [ "$?" -eq "0" ]; then
     echo "dpkg wrote installed packages to 'installed_packages.txt'."
 else
     echo "dpkg failed to list packages"
 fi
+
+# Read package names seperated by spaces and remove
+read -a -p "Enter a list of packages to 
+    remove seperated by spaces: " NEW_BAD_PACKAGES
+remove_apt "${NEW_BAD_PACKAGES[@]}"
+
 # Remove broken packages
 apt-get clean
 apt-get autoremove
