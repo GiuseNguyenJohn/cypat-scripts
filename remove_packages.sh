@@ -5,8 +5,8 @@
 # Then, it uses 'apt' and 'dpkg' to remove said packages along with a list
 # of default bad packages
 
-BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*" 
-    "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" 
+BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*"
+    "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*"
     "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*"
     "*netcat*" "*weplab*" "pyrit" "irssi")
 
@@ -24,15 +24,15 @@ BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*"
 function remove_apt() {
     local FAILED=$false
     for PACKAGE in "$@"; do
-        apt purge "$PACKAGE" 1> /dev/null
+        apt purge "$PACKAGE" 1> /dev/null # To debug, remove redirect
+        if [ "$?" -eq "0" ]; then
+            echo "apt removed: ${PACKAGE}"
+        else
+            echo "apt failed to remove ${PACKAGE}"
+            FAILED=$true
+        fi
     done
-    if [ "$?" -eq "0" ]; then
-        echo "apt removed: ${PACKAGE}"
-    else
-        echo "apt failed to remove ${PACKAGE}"
-        FAILED=$true
-    fi
-    if [ FAILED -eq $true ]; then
+    if [ "$FAILED" -eq $true ]; then
         return 1
     fi
 }
@@ -49,8 +49,8 @@ else
 fi
 
 # Read package names seperated by spaces and remove
-read -a -p "Enter a list of packages to 
-    remove seperated by spaces: " NEW_BAD_PACKAGES
+echo "Enter a list of packages to remove seperated by spaces:"
+read -a NEW_BAD_PACKAGES
 remove_apt "${NEW_BAD_PACKAGES[@]}"
 
 # Remove broken packages
