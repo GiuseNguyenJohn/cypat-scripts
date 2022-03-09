@@ -14,7 +14,7 @@ BAD_PACKAGES="wireshark "
 # Arguments:
 #     List of package names
 # Outputs:
-#     Writes actions to stdout
+#     Writes errors to stderr
 # Returns:
 #     0 if all packages removed successfully, 1 if failed.
 #######################################
@@ -29,7 +29,7 @@ function remove_apt() {
         FAILED=$true
     fi
     if [ FAILED -eq $true ]; then
-    return 1
+        return 1
 }
 
 # 
