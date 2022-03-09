@@ -45,7 +45,7 @@ function remove_apt() {
 #######################################
 # Checks the exit code of last command and reports success or failure
 # Globals:
-#     BAD_PACKAGES
+#
 # Arguments:
 #     command name
 # Outputs:
@@ -55,20 +55,19 @@ function remove_apt() {
 #######################################
 function check_status() {
 if [ "$?" -eq "0" ]; then
-    echo "dpkg wrote installed packages to 'installed_packages.txt'."
+    echo -e "${BOLDGREEN}SUCCESS: ${1} ${ENDCOLOR}}"
 else
-    echo "dpkg failed to list packages"
+    echo -e "${BOLDRED}FAILED: ${1} ${ENDCOLOR}}"
+    return 1
 fi
+}
+
 # Remove default bad packages
 remove_apt "$BAD_PACKAGES"
 
 # Write installed packages to file
 dpkg --list > installed_packages.txt
-if [ "$?" -eq "0" ]; then
-    echo "dpkg wrote installed packages to 'installed_packages.txt'."
-else
-    echo "dpkg failed to list packages"
-fi
+check_status "dpkg --list"
 
 # Read package names seperated by spaces and remove
 echo "Enter a list of packages to remove seperated by spaces:"
@@ -77,6 +76,10 @@ remove_apt "${NEW_BAD_PACKAGES[@]}"
 
 # Remove broken packages
 apt-get clean
+check_status "apt-get clean"
 apt-get autoremove
+check_status "apt-get autoremove"
 apt-get -f install
+check_status "apt-get -f install"
 dpkg --configure -a
+check_status "dpkg --configure -a"
