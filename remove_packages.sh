@@ -19,7 +19,7 @@ BAD_PACKAGES="wireshark "
 #     0 if all packages removed successfully, 1 if failed.
 #######################################
 function remove_apt() {
-    FAILED=$false
+    local FAILED=$false
     for PACKAGE in "$@"; do
     apt purge "$PACKAGE"
     if [ "$?" -eq "0" ]; then
