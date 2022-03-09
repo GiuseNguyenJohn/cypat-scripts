@@ -21,7 +21,8 @@ BAD_PACKAGES="wireshark "
 function remove_apt() {
     local FAILED=$false
     for PACKAGE in "$@"; do
-    apt purge "$PACKAGE" 1> /dev/null
+        apt purge "$PACKAGE" 1> /dev/null
+    done
     if [ "$?" -eq "0" ]; then
         echo "apt removed: ${PACKAGE}"
     else
@@ -30,6 +31,7 @@ function remove_apt() {
     fi
     if [ FAILED -eq $true ]; then
         return 1
+    fi
 }
 
 # 
@@ -38,7 +40,7 @@ if [ "$?" -eq "0" ]; then
     echo "dpkg wrote installed packages to 'installed_packages.txt'."
 else
     echo "dpkg failed to list packages"
-
+fi
 # Remove broken packages
 apt-get clean
 apt-get autoremove
