@@ -33,6 +33,11 @@ function remove_apt() {
 }
 
 # 
+dpkg --list > installed_packages.txt
+if [ "$?" -eq "0" ]; then
+    echo "dpkg wrote installed packages to 'installed_packages.txt'."
+else
+    echo "dpkg failed to list packages"
 
 # Remove broken packages
 apt-get clean
