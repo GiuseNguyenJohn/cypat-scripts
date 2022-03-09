@@ -19,7 +19,7 @@ BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*"
 #######################################
 # Remove packages with 'apt'
 # Globals:
-#     BAD_PACKAGES
+#     BAD_PACKAGES, BOLDGREEN, BOLDRED, ENDCOLOR
 # Arguments:
 #     List of package names
 # Outputs:
@@ -38,20 +38,20 @@ function remove_apt() {
             FAILED=$true
         fi
     done
-    if [ "$FAILED" -eq $true ]; then
+    if [ "$FAILED" -eq "$true" ]; then
         return 1
     fi
 }
 #######################################
 # Checks the exit code of last command and reports success or failure
 # Globals:
-#
+#     BOLDGREEN, BOLDRED, ENDCOLOR
 # Arguments:
 #     command name
 # Outputs:
 #     Writes output to stdout
 # Returns:
-#     0 if all packages removed successfully, 1 if failed.
+#     0 if command exited successfully, 1 if failed.
 #######################################
 function check_status() {
 if [ "$?" -eq "0" ]; then
@@ -63,7 +63,7 @@ fi
 }
 
 # Remove default bad packages
-remove_apt "$BAD_PACKAGES"
+remove_apt "${BAD_PACKAGES[@]}"
 
 # Write installed packages to file
 dpkg --list > installed_packages.txt
@@ -75,11 +75,11 @@ read -a NEW_BAD_PACKAGES
 remove_apt "${NEW_BAD_PACKAGES[@]}"
 
 # Remove broken packages
-apt-get clean
+apt-get clean 1> /dev/null
 check_status "apt-get clean"
-apt-get autoremove
+apt-get autoremove 1> /dev/null
 check_status "apt-get autoremove"
-apt-get -f install
+apt-get -f install 1> /dev/null
 check_status "apt-get -f install"
-dpkg --configure -a
+dpkg --configure -a 1> /dev/null
 check_status "dpkg --configure -a"
