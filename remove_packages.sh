@@ -16,10 +16,12 @@ BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*"
     "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*"
     "*netcat*" "*weplab*" "pyrit" "irssi")
 
+FAILED=$false
+
 #######################################
 # Remove packages with 'apt'
 # Globals:
-#     BAD_PACKAGES, BOLDGREEN, BOLDRED, ENDCOLOR
+#     BAD_PACKAGES, BOLDGREEN, BOLDRED, ENDCOLOR, FAILED
 # Arguments:
 #     List of package names
 # Outputs:
@@ -28,7 +30,6 @@ BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*"
 #     0 if all packages removed successfully, 1 if failed.
 #######################################
 function remove_apt() {
-    local FAILED=$false
     for PACKAGE in "$@"; do
         apt purge "$PACKAGE" 1> /dev/null # To debug, remove redirect
         if [ "$?" -eq "0" ]; then
@@ -36,11 +37,9 @@ function remove_apt() {
         else
             echo -e "${BOLDRED}apt failed to remove ${PACKAGE} ${ENDCOLOR}"
             FAILED=$true
+            exit 1
         fi
     done
-    if [ "$FAILED" -eq "$true" ]; then
-        return 1
-    fi
 }
 #######################################
 # Checks the exit code of last command and reports success or failure
@@ -83,3 +82,10 @@ apt-get -f install 1> /dev/null
 check_status "apt-get -f install"
 dpkg --configure -a 1> /dev/null
 check_status "dpkg --configure -a"
+
+# Exit with explicity exit code
+if [ "$FAILED" -eq "$true" ]; then
+    exit 1
+else
+    exit 0
+fi
