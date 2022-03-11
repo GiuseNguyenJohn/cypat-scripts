@@ -35,6 +35,7 @@ else
 fi
 }
 
+# TODO(John): test which commands have excessive output and redirect to /dev/null
 # create backup file
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 check_status "cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak"

@@ -39,6 +39,15 @@ fi
 #          MAIN CODE GOES HERE        #
 #######################################
 
+# TODO: Disable login for root
+
+# TODO: call python script that deletes unauthorized
+#       users and add new users
+
+# TODO: change password of all users to "(yb3rP4tr10ts!"
+
+# TODO: change shell of service accounts to /usr/sbin/nologin
+
 # Exit with explicity exit code
 if [[ "$FAILED" -eq "$true" ]]; then
     exit 1
