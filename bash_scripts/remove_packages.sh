@@ -11,7 +11,7 @@ BOLDGREEN="\e[1;${GREEN}m"
 BOLDRED="\e[1;${RED}m"
 ENDCOLOR="\e[0m"
 
-BAD_PACKAGES=("wireshark" "*ftp*" "*telnet*" "*tightvnc*"
+BAD_PACKAGES=("*wireshark*" "*ftp*" "*telnet*" "*tightvnc*"
     "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*"
     "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*"
     "*netcat*" "*weplab*" "pyrit" "irssi")
