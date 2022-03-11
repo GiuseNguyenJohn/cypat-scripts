@@ -43,7 +43,7 @@ check_status "cat ./config_files/sshd_config_HARDENED.txt > /etc/ssh/sshd_config
 
 # test config syntax
 sshd -t
-check_status "sshd -t // test sshd_config syntax"
+check_status "sshd -t"
 
 # reload sshd
 systemctl reload sshd.service
