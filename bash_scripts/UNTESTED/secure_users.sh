@@ -28,5 +28,6 @@ if [ "$?" -eq "0" ]; then
 else
     echo -e "${BOLDRED}FAILED: ${1} ${ENDCOLOR}"
     FAILED=$true
+    exit 1
 fi
 }

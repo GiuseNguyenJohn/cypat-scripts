@@ -29,5 +29,29 @@ if [ "$?" -eq "0" ]; then
 else
     echo -e "${BOLDRED}FAILED: ${1} ${ENDCOLOR}"
     FAILED=$true
+    exit 1
 fi
 }
+
+# create backup file
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+check_status "cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak"
+
+# overwrite the config file
+cat ./config_files/sshd_config_HARDENED.txt > /etc/ssh/sshd_config
+check_status "cat ./config_files/sshd_config_HARDENED.txt > /etc/ssh/sshd_config"
+
+# test config syntax
+sshd -t
+check_status "sshd -t // test sshd_config syntax"
+
+# reload sshd
+systemctl reload sshd.service
+check_status "systemctl reload sshd.service"
+
+# Exit with explicity exit code
+if [[ "$FAILED" -eq "$true" ]]; then
+    exit 1
+else
+    exit 0
+fi
