@@ -3,7 +3,7 @@
 # Author: John Nguyen
 # This script lists packages, and lets the user add any packages to be removed.
 # Then, it uses 'apt' and 'dpkg' to remove said packages along with a list
-# of default bad packages
+# of default bad packages. It makes directory "/home/logs/".
 
 RED="31"
 GREEN="32"
@@ -54,10 +54,10 @@ function remove_apt() {
 #######################################
 function check_status() {
 if [ "$?" -eq "0" ]; then
-    echo -e "${BOLDGREEN}SUCCESS: ${1} ${ENDCOLOR}}"
+    echo -e "${BOLDGREEN}SUCCESS: ${1} ${ENDCOLOR}"
 else
-    echo -e "${BOLDRED}FAILED: ${1} ${ENDCOLOR}}"
-    return 1
+    echo -e "${BOLDRED}FAILED: ${1} ${ENDCOLOR}"
+    FAILED=$true
 fi
 }
 
@@ -65,7 +65,9 @@ fi
 remove_apt "${BAD_PACKAGES[@]}"
 
 # Write installed packages to file
-dpkg --list > installed_packages.txt
+mkdir /home/logs/
+check_status "$(!!)"
+dpkg --list > /home/logs/installed_packages.txt
 check_status "dpkg --list"
 
 # Read package names seperated by spaces and remove
