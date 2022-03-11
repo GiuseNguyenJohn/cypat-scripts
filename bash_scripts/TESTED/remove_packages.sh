@@ -78,7 +78,7 @@ remove_apt "${NEW_BAD_PACKAGES[@]}"
 # Remove broken packages
 apt-get clean 1> /dev/null
 check_status "apt-get clean"
-apt-get autoremove 1> /dev/null
+apt-get -y autoremove 1> /dev/null
 check_status "apt-get autoremove"
 apt-get -f install 1> /dev/null
 check_status "apt-get -f install"
