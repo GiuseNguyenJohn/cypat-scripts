@@ -31,7 +31,7 @@ FAILED=$false
 #######################################
 function remove_apt() {
     for PACKAGE in "$@"; do
-        apt purge "$PACKAGE" 1> /dev/null # To debug, remove redirect
+        apt purge -y "$PACKAGE" 1> /dev/null # To debug, remove redirect
         if [ "$?" -eq "0" ]; then
             echo -e "${BOLDGREEN}apt removed: ${PACKAGE} ${ENDCOLOR}"
         else
