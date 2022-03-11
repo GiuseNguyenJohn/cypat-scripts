@@ -25,9 +25,9 @@ FAILED=$false
 #######################################
 function check_status() {
 if [ "$?" -eq "0" ]; then
-    echo -e "${BOLDGREEN}SUCCESS: ${1} ${ENDCOLOR}}"
+    echo -e "${BOLDGREEN}SUCCESS: ${1} ${ENDCOLOR}"
 else
-    echo -e "${BOLDRED}FAILED: ${1} ${ENDCOLOR}}"
-    return 1
+    echo -e "${BOLDRED}FAILED: ${1} ${ENDCOLOR}"
+    FAILED=$true
 fi
 }
