@@ -1,9 +1,11 @@
 #!/bin/bash
 # Author: John Nguyen
 # This script...
-# - disables login for root
-# - deletes unauthorized users
-# - adds new users
+# - enforces libpam-pwquality
+# - configure password expiration in /etc/login.defs
+# - change min, max, and warnings for password expiration
+#     of current users
+# - change all passwords of valid users
 
 RED="31"
 GREEN="32"
@@ -38,12 +40,9 @@ fi
 #          MAIN CODE GOES HERE        #
 #######################################
 
-# TODO: Disable login for root
+# TODO: 
 
-# TODO: call python script that deletes unauthorized
-#       users and add new users
-
-# TODO: change shell of service accounts to /usr/sbin/nologin
+# TODO: change password of all users to "(yb3rP4tr10ts!"
 
 # Exit with explicity exit code
 if [[ "$FAILED" -eq "$true" ]]; then
