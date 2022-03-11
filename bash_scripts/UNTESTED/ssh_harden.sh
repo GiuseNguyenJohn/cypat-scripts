@@ -1,7 +1,9 @@
 #!/bin/bash
 # Author: John Nguyen
 # This script...
-# - hardens the config file "/etc/ssh/sshd_config"
+# - creates a backup file
+# - overwrites the config file "/etc/ssh/sshd_config"
+# - validates the syntax of the config file
 # - reloads OpenSSH
 
 RED="31"
