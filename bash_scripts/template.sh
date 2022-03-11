@@ -31,6 +31,11 @@ else
 fi
 }
 
+#######################################
+#          MAIN CODE GOES HERE        #
+#######################################
+
+
 # Exit with explicity exit code
 if [[ "$FAILED" -eq "$true" ]]; then
     exit 1
