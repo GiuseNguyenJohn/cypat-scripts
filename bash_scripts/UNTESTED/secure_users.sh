@@ -31,3 +31,14 @@ else
     exit 1
 fi
 }
+
+#######################################
+#          MAIN CODE GOES HERE        #
+#######################################
+
+# Exit with explicity exit code
+if [[ "$FAILED" -eq "$true" ]]; then
+    exit 1
+else
+    exit 0
+fi
