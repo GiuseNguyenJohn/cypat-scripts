@@ -66,7 +66,7 @@ remove_apt "${BAD_PACKAGES[@]}"
 
 # Write installed packages to file
 mkdir /home/logs/
-check_status "$(!!)"
+check_status "mkdir /home/logs"
 dpkg --list > /home/logs/installed_packages.txt
 check_status "dpkg --list"
 
@@ -86,7 +86,7 @@ dpkg --configure -a 1> /dev/null
 check_status "dpkg --configure -a"
 
 # Exit with explicity exit code
-if [ "$FAILED" -eq "$true" ]; then
+if [[ "$FAILED" -eq "$true" ]]; then
     exit 1
 else
     exit 0
