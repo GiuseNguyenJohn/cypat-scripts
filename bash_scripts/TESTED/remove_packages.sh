@@ -1,9 +1,10 @@
 #!/bin/bash
-
 # Author: John Nguyen
-# This script lists packages, and lets the user add any packages to be removed.
-# Then, it uses 'apt' and 'dpkg' to remove said packages along with a list
-# of default bad packages. It makes directory "/home/logs/".
+# This script...
+# - lists packages
+# - lets the user add any packages to be removed.
+# - uses 'apt' to remove said packages along with a list of default bad packages
+# - makes directory "/home/logs/"
 
 RED="31"
 GREEN="32"

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Author: John Nguyen
-# This script ...
+# This script...
 
 RED="31"
 GREEN="32"

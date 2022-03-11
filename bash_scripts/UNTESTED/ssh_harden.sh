@@ -1,8 +1,8 @@
 #!/bin/bash
 # Author: John Nguyen
-# This script hardens the config file "/etc/ssh/sshd_config", inserts
-# "restrict, " before every key in "~/.ssh/authorized_keys" and
-# reloads OpenSSH.
+# This script...
+# - hardens the config file "/etc/ssh/sshd_config"
+# - reloads OpenSSH
 
 RED="31"
 GREEN="32"
