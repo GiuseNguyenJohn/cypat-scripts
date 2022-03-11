@@ -40,7 +40,16 @@ fi
 #          MAIN CODE GOES HERE        #
 #######################################
 
-# TODO: 
+# install libpam-pwquality
+apt install -y libpam-pwquality 1> /dev/null
+check_status "apt install libpam-pwquality"
+
+# make backup of common-password
+cp /etc/pam.d/common-password /etc/pam.d/common-password.bak
+check_status "cp /etc/pam.d/common-password /etc/pam.d/common-password.bak"
+
+# modify line with "pam_pwquality.so"
+
 
 # TODO: change password of all users to "(yb3rP4tr10ts!"
 
