@@ -119,7 +119,7 @@ ClientAliveCountMax 2
 
 # send a keepalive message to the client when the session has been idle for 300 seconds
 # this prevents/detects connection timeouts
-ClientAliveInterval 300
+ClientAliveInterval 180 # previously 300
 
 # compression before encryption might cause security issues
 Compression no
