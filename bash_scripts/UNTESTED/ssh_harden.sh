@@ -3,6 +3,8 @@
 # This script...
 # - creates a backup file
 # - overwrites the config file "/etc/ssh/sshd_config"
+# - generates new host keys
+# - makes directory /run/sshd
 # - validates the syntax of the config file
 # - reloads OpenSSH
 
@@ -35,7 +37,6 @@ else
 fi
 }
 
-# TODO(John): test which commands have excessive output and redirect to /dev/null
 # create backup file
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 check_status "cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak"
@@ -43,6 +44,12 @@ check_status "cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak"
 # overwrite the config file
 cat ../../config_files/sshd_config.txt > /etc/ssh/sshd_config
 check_status "cat ../../config_files/sshd_config.txt > /etc/ssh/sshd_config"
+
+# generate new hosts keys and make directory /run/sshd
+ssh-keygen -A
+check_status "ssh-keygen -A"
+mkdir -p /run/sshd
+check_status "mkdir -p /run/sshd"
 
 # test config syntax
 sshd -t
