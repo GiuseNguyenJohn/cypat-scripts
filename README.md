@@ -7,14 +7,16 @@ for best resources.
 
 ## Current Tasks (Linux):
 
+### High Priority
 - [] apache_harden.sh
-- [] chrootkit.sh
 - [] clamav.sh
 - [] mysql_harden.sh
 - [] password_policies.sh (John)
 - [] php_harden.sh
 - [x] remove_packages.sh (John)
-- [] rkhunter.sh
-- [] samba_harden.sh
 - [] secure_users.sh
 - [x] ssh_harden.sh (John)
+### Low Priority
+- [] chrootkit.sh
+- [] rkhunter.sh
+- [] samba_harden.sh
