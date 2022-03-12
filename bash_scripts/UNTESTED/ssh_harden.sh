@@ -42,8 +42,8 @@ cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 check_status "cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak"
 
 # overwrite the config file
-cat ../../config_files/sshd_config.txt > /etc/ssh/sshd_config
-check_status "cat ../../config_files/sshd_config.txt > /etc/ssh/sshd_config"
+cat /home/CyberBlobForce-2023/config_files/sshd_config.txt > /etc/ssh/sshd_config
+check_status "cat /home/CyberBlobForce-2023/config_files/sshd_config.txt > /etc/ssh/sshd_config"
 
 # generate new hosts keys and make directory /run/sshd
 ssh-keygen -A
