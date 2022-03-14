@@ -6,6 +6,7 @@
 # - change min, max, and warnings for password expiration
 #     of current users
 # - change all passwords of valid users
+# - configure lockout policy
 
 RED="31"
 GREEN="32"
@@ -47,6 +48,10 @@ check_status "apt install libpam-pwquality"
 # make backup of common-password
 cp /etc/pam.d/common-password /etc/pam.d/common-password.bak
 check_status "cp /etc/pam.d/common-password /etc/pam.d/common-password.bak"
+
+# configure lockout policy
+cat ./config_files/common-auth.txt > /etc/pam.d/common-auth
+check_status "cat ./config_files/common-auth.txt > /etc/pam.d/common-auth"
 
 # modify line with "pam_pwquality.so"
 
