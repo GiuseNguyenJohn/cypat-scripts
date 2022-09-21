@@ -32,12 +32,21 @@ ITALIC="${C}[3m"
 #---------) Parsing parameters (----------#
 ###########################################
 
+ALL_MODULES="delete_media"
 HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Debian 10 machine.
 ${NC}This script parses the README.txt file, then implements security measures ${DG}(AV, hardens applications, removes packages, firewall, system configs, removes users) ${NC}and outputs logs of changes being made.
     ${GREEN}Options
         ${YELLOW}-A ${BLUE} Execute all modules
+        ${YELLOW}-u <USER> ${BLUE} Add new user 
+        ${YELLOW}-U <USER> ${BLUE} Add new user as an administrator
     ${GREEN}Modules
-        ${YELLOW}-m ${BLUE} Remove media files (mp3, mp4)"
+        ${YELLOW}-m ${BLUE} Delete media files (mp3, mp4)
+        ${YELLOW}-f ${BLUE} Enable firewall and enforce firewall rules
+        ${YELLOW}-p ${BLUE} Delete disallowed packages
+        ${YELLOW}-d ${BLUE} Delete unauthorized users
+    ${GREEN}Misc.
+        ${YELLOW}-h ${BLUE} To show this message
+"
 
 ###########################################
 #------------) Main functions (-----------#
