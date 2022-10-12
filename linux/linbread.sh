@@ -33,7 +33,7 @@ ITALIC="${C}[3m"
 ###########################################
 
 ALL_MODULES="delete_media"
-HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Debian 10 machine.
+HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Fedora 36 machine.
 ${NC}This script parses the README.txt file, then implements security measures ${DG}(AV, hardens applications, removes packages, firewall, system configs, removes users) ${NC}and outputs logs of changes being made.
     ${GREEN}Options
         ${YELLOW}-A ${BLUE} Execute all modules
