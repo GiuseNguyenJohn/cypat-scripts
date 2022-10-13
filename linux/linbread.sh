@@ -52,7 +52,7 @@ ${NC}This script parses the README.txt file, then implements security measures $
 #------------) Main functions (-----------#
 ###########################################
 
-
+# Params: none
 delete_media_files (){
     local CMD="sh -c '(rm -f {} && printf ${RED}\"    Deleted {}\") || printf \"Failed to remove {}\"'"
     printf ${RED}"[+] Deleting Media..."$NC
@@ -73,8 +73,9 @@ forensics_2 (){
 
 delete_media (){
 	echo "[+] Deleting media files!"
-	find /home -type f -name "*.mp3" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
+	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
+delete_media
 
 remove_users (){
 	echo "[+] Removing unauthorized users!"
@@ -134,38 +135,38 @@ update_apps_services (){
 	apt install openssh
 }
 
-while getopts "Afu" options; do
-	case "${options}" in
-    	A)
-        	echo "[+] Executing all modules!"
-        	forensics_1
-        	forensics_2
-        	delete_media
-        	remove_users
-        	remove_packages
-        	stop_ftpd
-        	enable_ufw
-        	add_user
-        	configure_ssh
-        	change_user_passwd
-        	change_user_perm
-        	update
-        	update_apps_services
-        	;;
-    	f)
-        	forensics_1
-        	forensics_2
-        	;;
-    	u)
-        	update
-        	update_firefox
-        	;;
-    	*)
-        	print_usage
-        	;;
-	esac
-done
+# while getopts "Afu" options; do
+# 	case "${options}" in
+#     	A)
+#         	echo "[+] Executing all modules!"
+#         	forensics_1
+#         	forensics_2
+#         	delete_media
+#         	remove_users
+#         	remove_packages
+#         	stop_ftpd
+#         	enable_ufw
+#         	add_user
+#         	configure_ssh
+#         	change_user_passwd
+#         	change_user_perm
+#         	update
+#         	update_apps_services
+#         	;;
+#     	f)
+#         	forensics_1
+#         	forensics_2
+#         	;;
+#     	u)
+#         	update
+#         	update_firefox
+#         	;;
+#     	*)
+#         	print_usage
+#         	;;
+# 	esac
+# done
 
-if [ $OPTIND -eq 1 ]; then
-	print_usage
-fi
+# if [ $OPTIND -eq 1 ]; then
+# 	print_usage
+# fi
