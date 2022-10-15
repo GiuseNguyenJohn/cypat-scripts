@@ -70,7 +70,7 @@ delete_media (){
 remove_packages (){
 	echo -e "[+] Removing bad packages!"
 	apt remove -y "gameconqueror" "*wireshark*" "*ftp*" "*telnet*" "*tightvnc*" "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*" "*netcat*" "*weplab*" "pyrit"
-	apt remove -y "tcpdump" "telnet"
+	apt remove -y "tcpdump" "telnet" "deluge" "hydra" "nmap"
 }
 
 stop_ftpd (){
