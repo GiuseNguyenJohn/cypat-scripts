@@ -59,13 +59,13 @@ delete_media (){
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
 
-# params: none
-# remove_users (){
-# 	echo "[+] Removing unauthorized users!"
-# 	for USER in ballen sheogorath; do
-#     	userdel -f "${USER}"
-# 	done
-# }
+params: none
+remove_users (){
+	echo "[+] Removing unauthorized users!"
+	for USER in ballen sheogorath; do
+    	userdel -f "${USER}"
+	done
+}
 
 remove_packages (){
 	echo -e "[+] Removing bad packages!"
