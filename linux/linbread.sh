@@ -106,10 +106,10 @@ configure_ssh (){
 	systemctl restart sshd
 }
 
-# change_user_passwd (){
-# 	echo "[+] Changing weak passwords!"
-# 	usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) esbern
-# }
+change_user_passwd (){
+	echo "[+] Changing weak passwords!"
+	usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) esbern
+}
 
 # change_user_perm (){
 # 	echo "[+] Changing user permissions!"
