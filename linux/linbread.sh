@@ -59,23 +59,13 @@ delete_media_files (){
     find / -name "*.mp[34]" -exec $CMD \;
 }
 
-forensics_1 (){
-	echo "[+] Solving forensics question 1!"
-	mv /home/dovahkiin/Desktop/Forensics\ Question\ 1.txt /home/dovahkiin/Desktop/Forensics\ Question\ 1.txt.old
-	sed "s/<Type Answer Here>/$(id paarthurnax | cut -c '5-8')/g" /home/dovahkiin/Desktop/Forensics\ Question\ 1.txt.old > /home/dovahkiin/Desktop/Forensics\ Question\ 1.txt
-}
 
-forensics_2 (){
-	echo "[+] Solving forensics question 2!"
-	mv /home/dovahkiin/Desktop/Forensics\ Question\ 2.txt /home/dovahkiin/Desktop/Forensics\ Question\ 2.txt.old
-	sed "s/<Type Answer Here>/$(locate '*.mp3' | head -n 1 | cut -d '0' -f 1)/g" /home/dovahkiin/Desktop/Forensics\ Question\ 2.txt.old > /home/dovahkiin/Desktop/Forensics\ Question\ 2.txt
-}
-
+# params: none
+# tested
 delete_media (){
 	echo "[+] Deleting media files!"
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
-delete_media
 
 remove_users (){
 	echo "[+] Removing unauthorized users!"
