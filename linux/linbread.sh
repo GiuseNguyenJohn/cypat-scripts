@@ -52,14 +52,6 @@ ${NC}This script parses the README.txt file, then implements security measures $
 #------------) Main functions (-----------#
 ###########################################
 
-# Params: none
-delete_media_files (){
-    local CMD="sh -c '(rm -f {} && printf ${RED}\"    Deleted {}\") || printf \"Failed to remove {}\"'"
-    printf ${RED}"[+] Deleting Media..."$NC
-    find / -name "*.mp[34]" -exec $CMD \;
-}
-
-
 # params: none
 # tested
 delete_media (){
@@ -67,17 +59,17 @@ delete_media (){
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
 
-remove_users (){
-	echo "[+] Removing unauthorized users!"
-	for USER in ballen sheogorath; do
-    	userdel -f "${USER}"
-	done
-}
+# params: none
+# remove_users (){
+# 	echo "[+] Removing unauthorized users!"
+# 	for USER in ballen sheogorath; do
+#     	userdel -f "${USER}"
+# 	done
+# }
 
 remove_packages (){
-	echo "[+] Removing bad packages!"
-	apt remove manaplus
-	apt remove gameconqueror
+	echo -e "[+] Removing bad packages!"
+	apt remove -y "gameconqueror" "*wireshark*" "*ftp*" "*telnet*" "*tightvnc*" "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*" "*netcat*" "*weplab*" "pyrit"
 }
 
 stop_ftpd (){
@@ -95,24 +87,33 @@ enable_ufw (){
 
 add_user (){
 	echo "[+] Adding new user!"
-	useradd belethor
+	useradd esinclair
+}
+
+configure_new_group (){
+	groupadd dragonfire
+	for USER in ("emunson" "gareth" "jeff" "mwheeler" "dhenderson" "lsinclair" "esinclair"); do
+		usermod -a -G dragonfire $USER
+	done
 }
 
 configure_ssh (){
 	echo "[+] Configuring SSH securely!"
 	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
 	sed "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config.old > /etc/ssh/sshd_config
+	systemctl enable sshd
+	systemctl restart sshd
 }
 
-change_user_passwd (){
-	echo "[+] Changing weak passwords!"
-	usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) esbern
-}
+# change_user_passwd (){
+# 	echo "[+] Changing weak passwords!"
+# 	usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) esbern
+# }
 
-change_user_perm (){
-	echo "[+] Changing user permissions!"
-	deluser ulfric sudo
-}
+# change_user_perm (){
+# 	echo "[+] Changing user permissions!"
+# 	deluser ulfric sudo
+# }
 
 update (){
 	echo "[+] Updating and upgrading system!"
@@ -121,42 +122,41 @@ update (){
 
 update_apps_services (){
 	echo "[+] Updating apps and services!"
-	apt install firefox
-	apt install openssh
+	apt install -y firefox openssh vim gimp inkscape scribus
 }
 
-# while getopts "Afu" options; do
-# 	case "${options}" in
-#     	A)
-#         	echo "[+] Executing all modules!"
-#         	forensics_1
-#         	forensics_2
-#         	delete_media
-#         	remove_users
-#         	remove_packages
-#         	stop_ftpd
-#         	enable_ufw
-#         	add_user
-#         	configure_ssh
-#         	change_user_passwd
-#         	change_user_perm
-#         	update
-#         	update_apps_services
-#         	;;
-#     	f)
-#         	forensics_1
-#         	forensics_2
-#         	;;
-#     	u)
-#         	update
-#         	update_firefox
-#         	;;
-#     	*)
-#         	print_usage
-#         	;;
-# 	esac
-# done
+while getopts "Afu" options; do
+	case "${options}" in
+    	A)
+        	echo "[+] Executing all modules!"
+        	# forensics_1
+        	# forensics_2
+        	delete_media
+        	# remove_users
+        	remove_packages
+        	stop_ftpd
+        	enable_ufw
+        	# add_user
+        	configure_ssh
+        	# change_user_passwd
+        	# change_user_perm
+        	update
+        	update_apps_services
+        	;;
+    	f)
+        	forensics_1
+        	forensics_2
+        	;;
+    	u)
+        	update
+        	update_firefox
+        	;;
+    	*)
+        	print_usage
+        	;;
+	esac
+done
 
-# if [ $OPTIND -eq 1 ]; then
-# 	print_usage
-# fi
+if [ $OPTIND -eq 1 ]; then
+	print_usage
+fi

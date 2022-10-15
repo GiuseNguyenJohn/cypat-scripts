@@ -15,7 +15,7 @@ ENDCOLOR="\e[0m"
 BAD_PACKAGES=("*wireshark*" "*ftp*" "*telnet*" "*tightvnc*"
     "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*"
     "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*"
-    "*netcat*" "*weplab*" "pyrit" "irssi")
+    "*netcat*" "*weplab*" "pyrit")
 
 FAILED=$false
 
