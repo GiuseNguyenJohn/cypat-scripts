@@ -108,7 +108,10 @@ configure_ssh (){
 
 change_user_passwd (){
 	echo "[+] Changing weak passwords!"
-	usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) esbern
+	USERS=(	jhopper jbyers kwheeler mbrenner wbyers mmayfield bhargrove bnewby sowens rbuckley mbauman argyle emunson gareth jeff cpowell hwheeler ocallahan sbingham dantonov alexei )
+	for USER in "${USERS[@]}"; do
+		usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) $USER
+	done
 }
 
 # change_user_perm (){
