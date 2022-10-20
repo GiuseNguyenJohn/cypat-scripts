@@ -32,7 +32,7 @@ ITALIC="${C}[3m"
 #---------) Parsing parameters (----------#
 ###########################################
 
-ALL_MODULES="delete_media"
+ALL_MODULES=( delete_media remove_packages stop_services enable_ufw configure_ssh update_apps_services update )
 HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Fedora 36 machine.
 ${NC}This script parses the README.txt file, then implements security measures ${DG}(AV, hardens applications, removes packages, firewall, system configs, removes users) ${NC}and outputs logs of changes being made.
     ${GREEN}Options
@@ -43,15 +43,18 @@ ${NC}This script parses the README.txt file, then implements security measures $
         ${YELLOW}-m ${BLUE} Delete media files (mp3, mp4)
         ${YELLOW}-f ${BLUE} Enable firewall and enforce firewall rules
         ${YELLOW}-p ${BLUE} Delete disallowed packages
-        ${YELLOW}-d ${BLUE} Delete unauthorized users
+        ${YELLOW}-d 'user1,user2, ...' ${BLUE} Delete unauthorized users
     ${GREEN}Misc.
-        ${YELLOW}-h ${BLUE} To show this message
+        ${YELLOW}-h ${BLUE} To show this message${NC}
 "
 
 ###########################################
 #------------) Main functions (-----------#
 ###########################################
 
+print_usage (){
+	echo "${HELP}"
+}
 # params: none
 # tested
 delete_media (){
@@ -59,10 +62,10 @@ delete_media (){
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
 
-params: none
+# params: none
 remove_users (){
-	echo "[+] Removing unauthorized users!"
-	for USER in ballen sheogorath; do
+	echo "${RED}[+] Removing unauthorized users!${NC}"
+	for USER in "$@"; do
     	userdel -f "${USER}"
 	done
 }
@@ -73,7 +76,7 @@ remove_packages (){
 	apt remove -y "tcpdump" "telnet" "deluge" "hydra" "nmap"
 }
 
-stop_ftpd (){
+stop_services (){
 	echo "[+] Disabling bad services!"
 	systemctl stop pure-ftpd
 	systemctl disable pure-ftpd
@@ -93,7 +96,7 @@ add_user (){
 
 configure_new_group (){
 	groupadd dragonfire
-	for USER in ("emunson" "gareth" "jeff" "mwheeler" "dhenderson" "lsinclair" "esinclair"); do
+	for USER in "emunson" "gareth" "jeff" "mwheeler" "dhenderson" "lsinclair" "esinclair"; do
 		usermod -a -G dragonfire $USER
 	done
 }
@@ -101,7 +104,10 @@ configure_new_group (){
 configure_ssh (){
 	echo "[+] Configuring SSH securely!"
 	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
-	sed "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config.old > /etc/ssh/sshd_config
+	sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
+	sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
+	sed -i "s/DisableForwarding no/DisableForwarding yes/g" /etc/ssh/sshd_config
+	sed -i "s/PermitEmptyPasswords yes/PermitEmptyPasswords no/g" /etc/ssh/sshd_config
 	systemctl enable sshd
 	systemctl restart sshd
 }
@@ -126,35 +132,26 @@ update (){
 
 update_apps_services (){
 	echo "[+] Updating apps and services!"
-	apt install -y firefox openssh vim gimp inkscape scribus
+	apt install -y firefox openssh vim
 }
 
-while getopts "Afu" options; do
+while getopts "Aud:" options; do
 	case "${options}" in
     	A)
         	echo "[+] Executing all modules!"
-        	# forensics_1
-        	# forensics_2
-        	delete_media
-        	# remove_users
-        	remove_packages
-        	stop_ftpd
-        	enable_ufw
-        	# add_user
-        	configure_ssh
-        	# change_user_passwd
-        	# change_user_perm
-        	update
-        	update_apps_services
-        	;;
-    	f)
-        	forensics_1
-        	forensics_2
+			for MODULE in "${ALL_MODULES[@]}"; do
+				$MODULE
+			done
         	;;
     	u)
         	update
         	update_firefox
         	;;
+		d)
+		  	# convert comma-separated list into bash array
+		 	IFS=',' read -ra USERS <<< "${OPTARG}"
+			remove_users "${USERS[@]}"
+			;;
     	*)
         	print_usage
         	;;
