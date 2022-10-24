@@ -126,7 +126,7 @@ remove_users (){
 remove_packages (){
 	echo -e "${RED}[+] Removing bad packages!${NC}"
 	apt remove -y "gameconqueror" "*wireshark*" "*ftp*" "*telnet*" "*tightvnc*" "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*" "*netcat*" "*weplab*" "pyrit"
-	apt remove -y "tcpdump" "telnet" "deluge" "hydra" "nmap"
+	apt remove -y "tcpdump" "telnet" "deluge" "hydra" "hydra-gtk" "nmap"
 }
 
 stop_services (){
