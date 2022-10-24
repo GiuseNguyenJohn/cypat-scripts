@@ -96,7 +96,7 @@ configure_ssh (){
 }
 
 configure_samba () {
-	echo "${GREEN}[+] 
+	echo "${GREEN}[+] Configuring samba
 }
 # params: none
 # tested
