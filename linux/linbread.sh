@@ -57,6 +57,12 @@ ${NC}This script parses the README.txt file, then implements security measures $
 print_usage (){
 	echo "${HELP}"
 }
+
+add_user (){
+	echo "${GREEN}[+] Adding new user!${NC}"
+	useradd esinclair
+}
+
 # params: none
 # tested
 delete_media (){
@@ -89,11 +95,6 @@ enable_ufw (){
 	ufw enable
 	ufw default allow outgoing
 	ufw default deny incoming
-}
-
-add_user (){
-	echo "${GREEN}[+] Adding new user!${NC}"
-	useradd esinclair
 }
 
 configure_new_group (){
