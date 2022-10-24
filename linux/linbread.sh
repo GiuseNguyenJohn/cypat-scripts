@@ -102,6 +102,13 @@ delete_media (){
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
 
+enable_ufw (){
+	echo "${GREEN}[+] Enabling and configuring firewall!${NC}"
+	ufw enable
+	ufw default allow outgoing
+	ufw default deny incoming
+}
+
 # params: none
 remove_users (){
 	echo "${RED}[+] Removing unauthorized users!${NC}"
@@ -120,13 +127,6 @@ stop_services (){
 	echo "${RED}[+] Disabling bad services!${NC}"
 	systemctl stop pure-ftpd
 	systemctl disable pure-ftpd
-}
-
-enable_ufw (){
-	echo "${GREEN}[+] Enabling and configuring firewall!${NC}"
-	ufw enable
-	ufw default allow outgoing
-	ufw default deny incoming
 }
 
 update (){
