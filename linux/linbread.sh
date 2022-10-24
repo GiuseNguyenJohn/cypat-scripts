@@ -100,6 +100,7 @@ configure_samba () {
 	mv /etc/smb.conf /etc/smb.conf.old
 	sed -i "s///g" /etc/ssh/sshd_config
 }
+
 # params: none
 # tested
 delete_media (){
