@@ -96,7 +96,7 @@ configure_ssh (){
 }
 
 configure_samba () {
-	echo "${GREEN}[+] Configuring samba (/etc/smb.conf)!"
+	echo "${GREEN}[+] Configuring samba (/etc/smb.conf)!${NC}"
 	mv /etc/smb.conf /etc/smb.conf.old
 	sed -i "s///g" /etc/ssh/sshd_config
 }
