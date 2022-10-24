@@ -33,6 +33,7 @@ ITALIC="${C}[3m"
 ###########################################
 
 ALL_MODULES=( delete_media remove_packages stop_services enable_ufw configure_ssh update_apps_services update )
+# Modules not in ALL_MODULES: print_usage remove_users add_user configure_new_group
 HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Fedora 36 machine.
 ${NC}This script parses the README.txt file, then implements security measures ${DG}(AV, hardens applications, removes packages, firewall, system configs, removes users) ${NC}and outputs logs of changes being made.
     ${GREEN}Options
@@ -44,6 +45,7 @@ ${NC}This script parses the README.txt file, then implements security measures $
         ${YELLOW}-f ${BLUE} Enable firewall and enforce firewall rules
         ${YELLOW}-p ${BLUE} Delete disallowed packages
         ${YELLOW}-d 'user1,user2, ...' ${BLUE} Delete unauthorized users
+		${YELLOW}-g ${BLUE} Add new group and users to the group
     ${GREEN}Misc.
         ${YELLOW}-h ${BLUE} To show this message${NC}
 "
@@ -58,7 +60,7 @@ print_usage (){
 # params: none
 # tested
 delete_media (){
-	echo "[+] Deleting media files!"
+	echo "${RED}[+] Deleting media files!${NC}"
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
 
@@ -71,30 +73,31 @@ remove_users (){
 }
 
 remove_packages (){
-	echo -e "[+] Removing bad packages!"
+	echo -e "${RED}[+] Removing bad packages!${NC}"
 	apt remove -y "gameconqueror" "*wireshark*" "*ftp*" "*telnet*" "*tightvnc*" "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" "*logkeys*" "*john*" "*frostwire*" "vuze" "*samba*" "*netcat*" "*weplab*" "pyrit"
 	apt remove -y "tcpdump" "telnet" "deluge" "hydra" "nmap"
 }
 
 stop_services (){
-	echo "[+] Disabling bad services!"
+	echo "${RED}[+] Disabling bad services!${NC}"
 	systemctl stop pure-ftpd
 	systemctl disable pure-ftpd
 }
 
 enable_ufw (){
-	echo "[+] Enabling and configuring firewall!"
+	echo "${GREEN}[+] Enabling and configuring firewall!${NC}"
 	ufw enable
 	ufw default allow outgoing
 	ufw default deny incoming
 }
 
 add_user (){
-	echo "[+] Adding new user!"
+	echo "${GREEN}[+] Adding new user!${NC}"
 	useradd esinclair
 }
 
 configure_new_group (){
+	echo "${GREEN}[+] Adding new group and users!${NC}"
 	groupadd dragonfire
 	for USER in "emunson" "gareth" "jeff" "mwheeler" "dhenderson" "lsinclair" "esinclair"; do
 		usermod -a -G dragonfire $USER
@@ -102,7 +105,7 @@ configure_new_group (){
 }
 
 configure_ssh (){
-	echo "[+] Configuring SSH securely!"
+	echo "${GREEN}[+] Configuring SSH securely!${NC}"
 	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
 	sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 	sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
@@ -113,7 +116,7 @@ configure_ssh (){
 }
 
 change_user_passwd (){
-	echo "[+] Changing weak passwords!"
+	echo "${GREEN}[+] Changing weak passwords!${NC}"
 	USERS=(jhopper jbyers kwheeler mbrenner wbyers mmayfield bhargrove bnewby sowens rbuckley mbauman argyle emunson gareth jeff cpowell hwheeler ocallahan sbingham dantonov alexei )
 	for USER in "${USERS[@]}"; do
 		usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) $USER
@@ -126,16 +129,16 @@ change_user_passwd (){
 # }
 
 update (){
-	echo "[+] Updating and upgrading system!"
+	echo "${GREEN}[+] Updating and upgrading system!${NC}"
 	apt update -y && apt upgrade -y
 }
 
 update_apps_services (){
-	echo "[+] Updating apps and services!"
+	echo "${GREEN}[+] Updating apps and services!${NC}"
 	apt install -y firefox openssh vim
 }
 
-while getopts "Aud:" options; do
+while getopts "Aud:g" options; do
 	case "${options}" in
     	A)
         	echo "[+] Executing all modules!"
@@ -144,13 +147,15 @@ while getopts "Aud:" options; do
 			done
         	;;
     	u)
-        	update
-        	update_firefox
+        	add_user
         	;;
 		d)
 		  	# convert comma-separated list into bash array
 		 	IFS=',' read -ra USERS <<< "${OPTARG}"
 			remove_users "${USERS[@]}"
+			;;
+		g)
+			configure_new_group
 			;;
     	*)
         	print_usage
