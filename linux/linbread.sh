@@ -63,6 +63,38 @@ add_user (){
 	useradd esinclair
 }
 
+change_user_passwd (){
+	echo "${GREEN}[+] Changing weak passwords!${NC}"
+	USERS=(jhopper jbyers kwheeler mbrenner wbyers mmayfield bhargrove bnewby sowens rbuckley mbauman argyle emunson gareth jeff cpowell hwheeler ocallahan sbingham dantonov alexei )
+	for USER in "${USERS[@]}"; do
+		usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) $USER
+	done
+}
+
+configure_new_group (){
+	echo "${GREEN}[+] Adding new group and users!${NC}"
+	groupadd dragonfire
+	for USER in "emunson" "gareth" "jeff" "mwheeler" "dhenderson" "lsinclair" "esinclair"; do
+		usermod -a -G dragonfire $USER
+	done
+}
+
+configure_ssh (){
+	echo "${GREEN}[+] Configuring SSH securely!${NC}"
+	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
+	sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
+	sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
+	sed -i "s/DisableForwarding no/DisableForwarding yes/g" /etc/ssh/sshd_config
+	sed -i "s/PermitEmptyPasswords yes/PermitEmptyPasswords no/g" /etc/ssh/sshd_config
+	systemctl enable sshd
+	systemctl restart sshd
+}
+
+# change_user_perm (){
+# 	echo "[+] Changing user permissions!"
+# 	deluser ulfric sudo
+# }
+
 # params: none
 # tested
 delete_media (){
@@ -96,38 +128,6 @@ enable_ufw (){
 	ufw default allow outgoing
 	ufw default deny incoming
 }
-
-configure_new_group (){
-	echo "${GREEN}[+] Adding new group and users!${NC}"
-	groupadd dragonfire
-	for USER in "emunson" "gareth" "jeff" "mwheeler" "dhenderson" "lsinclair" "esinclair"; do
-		usermod -a -G dragonfire $USER
-	done
-}
-
-configure_ssh (){
-	echo "${GREEN}[+] Configuring SSH securely!${NC}"
-	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
-	sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
-	sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
-	sed -i "s/DisableForwarding no/DisableForwarding yes/g" /etc/ssh/sshd_config
-	sed -i "s/PermitEmptyPasswords yes/PermitEmptyPasswords no/g" /etc/ssh/sshd_config
-	systemctl enable sshd
-	systemctl restart sshd
-}
-
-change_user_passwd (){
-	echo "${GREEN}[+] Changing weak passwords!${NC}"
-	USERS=(jhopper jbyers kwheeler mbrenner wbyers mmayfield bhargrove bnewby sowens rbuckley mbauman argyle emunson gareth jeff cpowell hwheeler ocallahan sbingham dantonov alexei )
-	for USER in "${USERS[@]}"; do
-		usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) $USER
-	done
-}
-
-# change_user_perm (){
-# 	echo "[+] Changing user permissions!"
-# 	deluser ulfric sudo
-# }
 
 update (){
 	echo "${GREEN}[+] Updating and upgrading system!${NC}"
