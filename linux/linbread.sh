@@ -85,7 +85,7 @@ configure_new_group (){
 }
 
 configure_ssh (){
-	echo "${GREEN}[+] Configuring SSH securely!${NC}"
+	echo "${GREEN}[+] Configuring SSH securely (/etc/ssh/sshd_config)!${NC}"
 	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
 	sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 	sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
@@ -96,7 +96,7 @@ configure_ssh (){
 }
 
 configure_samba () {
-	echo "${GREEN}[+] Configuring samba
+	echo "${GREEN}[+] Configuring samba (/etc/smb.conf)!"
 }
 # params: none
 # tested
