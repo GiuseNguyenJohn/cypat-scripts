@@ -95,6 +95,9 @@ configure_ssh (){
 	systemctl restart sshd
 }
 
+configure_samba () {
+	echo "${GREEN}[+] 
+}
 # params: none
 # tested
 delete_media (){
