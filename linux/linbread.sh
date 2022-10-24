@@ -71,6 +71,11 @@ change_user_passwd (){
 	done
 }
 
+# change_user_perm (){
+# 	echo "[+] Changing user permissions!"
+# 	deluser ulfric sudo
+# }
+
 configure_new_group (){
 	echo "${GREEN}[+] Adding new group and users!${NC}"
 	groupadd dragonfire
@@ -89,11 +94,6 @@ configure_ssh (){
 	systemctl enable sshd
 	systemctl restart sshd
 }
-
-# change_user_perm (){
-# 	echo "[+] Changing user permissions!"
-# 	deluser ulfric sudo
-# }
 
 # params: none
 # tested
