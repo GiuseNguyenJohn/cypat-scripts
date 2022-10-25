@@ -112,7 +112,8 @@ configure_samba () {
 
 configure_network_settings (){
 	echo "${GREEN}[+] Configuring network settings (/etc/sysctl.conf)!${NC}"
-	sed -i "s/^.*//g" /etc/sysctl.conf
+	sed -i "s/^.*net.ipv4.tcp_syncookies=.*$/net.ipv4.tcp_syncookies=1/g" /etc/sysctl.conf
+	sed -i "s///g" /etc/sysctl.conf
 }
 # params: none
 # tested
