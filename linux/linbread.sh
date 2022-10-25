@@ -117,7 +117,7 @@ configure_network (){
 	sed -i "s/^.*net.ipv4.tcp_syncookies=.*$/net.ipv4.tcp_syncookies=1/g" /etc/sysctl.conf
 	# Do not accept ICMP redirects (prevent MITM attacks)
 	sed -i "s/^.*net.ipv4.conf.all.accept_redirects=.*$/net.ipv4.conf.all.accept_redirects=0/g" /etc/sysctl.conf
-	sed -i "s/^.*net.ipv6.conf.all.accept_redirects=.*$/net.ipv4.conf.all.accept_redirects=0/g" /etc/sysctl.conf
+	sed -i "s/^.*net.ipv6.conf.all.accept_redirects=.*$/net.ipv6.conf.all.accept_redirects=0/g" /etc/sysctl.conf
 }
 
 # params: none
