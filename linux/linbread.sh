@@ -40,9 +40,6 @@ ${NC}This script parses the README.txt file, then implements security measures $
         ${YELLOW}-A ${BLUE} Execute all modules
         ${YELLOW}-u <USER> ${BLUE} Add new user
     ${GREEN}Modules
-        ${YELLOW}-m ${BLUE} Delete media files (mp3, mp4)
-        ${YELLOW}-f ${BLUE} Enable firewall and enforce firewall rules
-        ${YELLOW}-p ${BLUE} Delete disallowed packages
         ${YELLOW}-d 'user1,user2, ...' ${BLUE} Delete unauthorized users
 		${YELLOW}-g ${BLUE} Add new group and users to the group
     ${GREEN}Misc.
