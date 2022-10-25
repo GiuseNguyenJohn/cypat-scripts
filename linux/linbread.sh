@@ -97,8 +97,10 @@ configure_ssh (){
 
 configure_samba () {
 	echo "${GREEN}[+] Configuring samba (/etc/smb.conf)!${NC}"
+	# Files: /etc/smb.conf, /etc/rc.d/init.d/smb, /etc/logrotate.d/samba, /etc/pam.d/samba
 	mv /etc/smb.conf /etc/smb.conf.old
-	sed -i "s///g" /etc/ssh/sshd_config
+	sed -i "s/encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
+	#sed -i "s/encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
 }
 
 # params: none
@@ -145,7 +147,7 @@ update_apps_services (){
 	apt install -y firefox openssh vim
 }
 
-while getopts "Aud:g" options; do
+while getopts "Aud:gs" options; do
 	case "${options}" in
     	A)
         	echo "[+] Executing all modules!"
@@ -163,6 +165,9 @@ while getopts "Aud:g" options; do
 			;;
 		g)
 			configure_new_group
+			;;
+		s)
+			configure_samba
 			;;
     	*)
         	print_usage
