@@ -104,7 +104,8 @@ configure_samba () {
 	sed -i "s/security = .*$/security = user/g" /etc/smb.conf
 	sed -i "s/smb passwd file = .*$/smb passwd file = \/etc\/smbpasswd/g" /etc/smb.conf
 	sed -i "s/dns proxy = .*$/dns proxy = no/g" /etc/smb.conf
-	sed -i "s/dns proxy = .*$/dns proxy = no/g" /etc/smb.conf
+	sed -i "s/bind interfaces only = .*$/bind interfaces only = True/g" /etc/smb.conf
+	sed -i "s/hosts deny = .*$/host deny = ALL/g" /etc/smb.conf
 }
 
 # params: none
