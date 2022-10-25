@@ -42,6 +42,7 @@ ${NC}This script parses the README.txt file, then implements security measures $
     ${GREEN}Modules
         ${YELLOW}-d 'user1,user2, ...' ${BLUE} Delete unauthorized users
 		${YELLOW}-g ${BLUE} Add new group and users to the group
+		${YELLOW}-s ${BLUE} Configure Samba (/etc/smb.conf)
     ${GREEN}Misc.
         ${YELLOW}-h ${BLUE} To show this message${NC}
 "
