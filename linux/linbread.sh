@@ -100,7 +100,7 @@ configure_samba () {
 	# Files: /etc/smb.conf, /etc/rc.d/init.d/smb, /etc/logrotate.d/samba, /etc/pam.d/samba
 	cp /etc/smb.conf /etc/smb.conf.old
 	sed -i "s/encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
-	#sed -i "s/encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
+	sed -i "s/encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
 }
 
 # params: none
