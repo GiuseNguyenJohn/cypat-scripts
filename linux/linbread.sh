@@ -131,8 +131,11 @@ configure_network (){
 
 configure_vsftpd (){
 	echo "${GREEN}[+] Configuring vsftpd (/etc/vsftpd/vsftpd.conf)${NC}"
-	# Files
+	cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.old
+	sed -i "s/^.*write_enable.*$/write_enable=NO/g" /etc/vsftpd/vsftpd.conf
+	sed -i "s/^.*anonymous_enable.*$/anonymous_enable=NO/g" /etc/vsftpd/vsftpd.conf
 }
+
 # params: none
 # tested
 delete_media (){
