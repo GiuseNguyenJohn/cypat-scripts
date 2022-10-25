@@ -129,6 +129,10 @@ configure_network (){
 	sed -i "s/^.*net.ipv6.conf.all.accept_redirects.*$/net.ipv6.conf.all.accept_redirects=0/g" /etc/sysctl.conf
 }
 
+configure_vsftpd (){
+	echo "${GREEN}[+] Configuring vsftpd (/etc/vsftpd/vsftpd.conf)${NC}"
+	# Files
+}
 # params: none
 # tested
 delete_media (){
