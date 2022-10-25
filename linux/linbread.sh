@@ -102,7 +102,8 @@ configure_samba () {
 	sed -i "s/encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
 	sed -i "s/security = .*$/security = user/g" /etc/smb.conf
 	sed -i "s/smb passwd file = .*$/smb passwd file = \/etc\/smbpasswd/g" /etc/smb.conf
-	sed -i "s/security = .*$/security = user/g" /etc/smb.conf
+	sed -i "s/dns proxy = .*$/dns proxy = no/g" /etc/smb.conf
+	sed -i "s/dns proxy = .*$/dns proxy = no/g" /etc/smb.conf
 }
 
 # params: none
