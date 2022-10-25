@@ -32,7 +32,17 @@ ITALIC="${C}[3m"
 #---------) Parsing parameters (----------#
 ###########################################
 
-ALL_MODULES=( delete_media remove_packages stop_services enable_ufw configure_ssh configure_samba configure_network update_apps_services update )
+ALL_MODULES=(
+configure_ssh \
+configure_samba \
+configure_network \
+delete_media \
+enable_ufw \
+remove_packages \
+stop_services \
+update_apps_services \
+update \
+)
 # Modules not in ALL_MODULES: print_usage remove_users add_user configure_new_group
 HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Fedora 36 machine.
 ${NC}This script parses the README.txt file, then implements security measures ${DG}(AV, hardens applications, removes packages, firewall, system configs, removes users) ${NC}and outputs logs of changes being made.
