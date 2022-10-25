@@ -136,9 +136,11 @@ configure_network (){
 
 configure_vsftpd (){
 	echo "${GREEN}[+] Configuring vsftpd (/etc/vsftpd/vsftpd.conf)${NC}"
+	# Files:  /etc/vsftpd/ftpusers, /etc/vsftpd/user_list
 	cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.old
 	sed -i "s/^.*write_enable.*$/write_enable=NO/g" /etc/vsftpd/vsftpd.conf
 	sed -i "s/^.*anonymous_enable.*$/anonymous_enable=NO/g" /etc/vsftpd/vsftpd.conf
+	# TODO: deny root ftp login
 	systemctl enable vsftpd
 	systemctl restart vsftpd
 
