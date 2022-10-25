@@ -117,6 +117,10 @@ configure_samba () {
 	sed -i "s/hosts deny = .*$/host deny = ALL/g" /etc/smb.conf
 	# https://www.linuxtopia.org/online_books/linux_system_administration/securing_and_optimizing_linux/chap29sec286.html
 	chmod 600 /etc/smbpasswd
+	systemctl enable smbd
+	systemctl enable nmbd
+	systemctl restart nmbd
+	systemctl restart smbd
 }
 
 configure_network (){
