@@ -109,12 +109,12 @@ configure_samba () {
 	# Files: /etc/smb.conf, /etc/rc.d/init.d/smb, /etc/logrotate.d/samba, /etc/pam.d/samba
 	cp /etc/smb.conf /etc/smb.conf.old
 	# https://www.linuxtopia.org/online_books/linux_system_administration/securing_and_optimizing_linux/chap29sec284.html
-	sed -i "s/.*encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
-	sed -i "s/.*security = .*$/security = user/g" /etc/smb.conf
-	sed -i "s/.*smb passwd file = .*$/smb passwd file = \/etc\/smbpasswd/g" /etc/smb.conf
-	sed -i "s/.*dns proxy = .*$/dns proxy = no/g" /etc/smb.conf
-	sed -i "s/.*bind interfaces only = .*$/bind interfaces only = True/g" /etc/smb.conf
-	sed -i "s/.*hosts deny = .*$/host deny = ALL/g" /etc/smb.conf
+	sed -i "s/^.*encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
+	sed -i "s/^.*security = .*$/security = user/g" /etc/smb.conf
+	sed -i "s/^.*smb passwd file = .*$/smb passwd file = \/etc\/smbpasswd/g" /etc/smb.conf
+	sed -i "s/^.*dns proxy = .*$/dns proxy = no/g" /etc/smb.conf
+	sed -i "s/^.*bind interfaces only = .*$/bind interfaces only = True/g" /etc/smb.conf
+	sed -i "s/^.*hosts deny = .*$/host deny = ALL/g" /etc/smb.conf
 	# https://www.linuxtopia.org/online_books/linux_system_administration/securing_and_optimizing_linux/chap29sec286.html
 	chmod 600 /etc/smbpasswd
 	systemctl enable smbd
@@ -147,8 +147,6 @@ configure_vsftpd (){
 
 }
 
-# params: none
-# tested
 delete_media (){
 	echo "${RED}[+] Deleting media files!${NC}"
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
@@ -161,7 +159,6 @@ enable_ufw (){
 	ufw default deny incoming
 }
 
-# params: none
 remove_users (){
 	echo "${RED}[+] Removing unauthorized users!${NC}"
 	for USER in "$@"; do
