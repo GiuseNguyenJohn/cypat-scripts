@@ -32,7 +32,7 @@ ITALIC="${C}[3m"
 #---------) Parsing parameters (----------#
 ###########################################
 
-ALL_MODULES=( delete_media remove_packages stop_services enable_ufw configure_ssh update_apps_services update )
+ALL_MODULES=( delete_media remove_packages stop_services enable_ufw configure_ssh configure_samba configure_network update_apps_services update )
 # Modules not in ALL_MODULES: print_usage remove_users add_user configure_new_group
 HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Fedora 36 machine.
 ${NC}This script parses the README.txt file, then implements security measures ${DG}(AV, hardens applications, removes packages, firewall, system configs, removes users) ${NC}and outputs logs of changes being made.
@@ -110,11 +110,16 @@ configure_samba () {
 	chmod 600 /etc/smbpasswd
 }
 
-configure_network_settings (){
+configure_network (){
 	echo "${GREEN}[+] Configuring network settings (/etc/sysctl.conf)!${NC}"
+	cp /etc/sysctl.conf /etc/sysctl.conf.old
+	# enable TCP/IP SYN cookies
 	sed -i "s/^.*net.ipv4.tcp_syncookies=.*$/net.ipv4.tcp_syncookies=1/g" /etc/sysctl.conf
-	sed -i "s///g" /etc/sysctl.conf
+	# Do not accept ICMP redirects (prevent MITM attacks)
+	sed -i "s/^.*net.ipv4.conf.all.accept_redirects=.*$/net.ipv4.conf.all.accept_redirects=0/g" /etc/sysctl.conf
+	sed -i "s/^.*net.ipv6.conf.all.accept_redirects=.*$/net.ipv4.conf.all.accept_redirects=0/g" /etc/sysctl.conf
 }
+
 # params: none
 # tested
 delete_media (){
@@ -159,7 +164,7 @@ update_apps_services (){
 	apt install -y firefox openssh vim
 }
 
-while getopts "Aud:gs" options; do
+while getopts "Aud:gsn" options; do
 	case "${options}" in
     	A)
         	echo "[+] Executing all modules!"
@@ -180,6 +185,9 @@ while getopts "Aud:gs" options; do
 			;;
 		s)
 			configure_samba
+			;;
+		n)
+			configure_network
 			;;
     	*)
         	print_usage
