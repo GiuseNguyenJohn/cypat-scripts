@@ -110,6 +110,10 @@ configure_samba () {
 	chmod 600 /etc/smbpasswd
 }
 
+configure_network_settings (){
+	echo "${GREEN}[+] Configuring network settings (/etc/sysctl.conf)!${NC}"
+	sed -i "s///g" /etc/sysctl.conf
+}
 # params: none
 # tested
 delete_media (){
