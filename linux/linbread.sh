@@ -131,6 +131,7 @@ configure_network (){
 	# Do not accept ICMP redirects (prevent MITM attacks)
 	sed -i "s/^.*net.ipv4.conf.all.accept_redirects.*$/net.ipv4.conf.all.accept_redirects=0/g" /etc/sysctl.conf
 	sed -i "s/^.*net.ipv6.conf.all.accept_redirects.*$/net.ipv6.conf.all.accept_redirects=0/g" /etc/sysctl.conf
+	sysctl -p
 }
 
 configure_vsftpd (){
@@ -138,6 +139,9 @@ configure_vsftpd (){
 	cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.old
 	sed -i "s/^.*write_enable.*$/write_enable=NO/g" /etc/vsftpd/vsftpd.conf
 	sed -i "s/^.*anonymous_enable.*$/anonymous_enable=NO/g" /etc/vsftpd/vsftpd.conf
+	systemctl enable vsftpd
+	systemctl restart vsftpd
+
 }
 
 # params: none
