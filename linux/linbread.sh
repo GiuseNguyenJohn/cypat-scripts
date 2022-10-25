@@ -36,6 +36,7 @@ ALL_MODULES=(
 configure_ssh \
 configure_samba \
 configure_network \
+configure_ftp \
 delete_media \
 enable_ufw \
 remove_packages \
