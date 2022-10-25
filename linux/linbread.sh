@@ -99,6 +99,7 @@ configure_samba () {
 	echo "${GREEN}[+] Configuring samba (/etc/smb.conf)!${NC}"
 	# Files: /etc/smb.conf, /etc/rc.d/init.d/smb, /etc/logrotate.d/samba, /etc/pam.d/samba
 	cp /etc/smb.conf /etc/smb.conf.old
+	# https://www.linuxtopia.org/online_books/linux_system_administration/securing_and_optimizing_linux/chap29sec284.html
 	sed -i "s/encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
 	sed -i "s/security = .*$/security = user/g" /etc/smb.conf
 	sed -i "s/smb passwd file = .*$/smb passwd file = \/etc\/smbpasswd/g" /etc/smb.conf
