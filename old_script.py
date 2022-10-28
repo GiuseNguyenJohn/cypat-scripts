@@ -63,7 +63,7 @@ echo -n "Should VSFTP Be Installed/Reinstalled? [Y/n] "
 read option
 if [[ $option =~ ^[Yy]$ ]]
 then
-     apt-get -y install vsftpd > /dev/null 2>&1 
+     apt-get -y install vsftpd > /dev/null 2>&1
      # Disable anonymous uploads
       sed -i '/^anon_upload_enable/ c\anon_upload_enable no   #' /etc/vsftpd.conf # outdated?
       sed -i '/^anonymous_enable/ c\anonymous_enable=NO  #' /etc/vsftpd.conf
@@ -71,7 +71,7 @@ then
       sed -i '/^chroot_local_user/ c\chroot_local_user=YES  #' /etc/vsftpd.conf
       service vsftpd restart
 else
-      dpkg --purge vsftpd > /dev/null 2>&1 
+      dpkg --purge vsftpd > /dev/null 2>&1
 fi
 """
 
@@ -81,13 +81,13 @@ echo -n "Should Apache2 Be Installed/Reinstalled? [Y/n] "
 read option
 if [[ $option =~ ^[Yy]$ ]]
 then
-     apt-get install apache2 libapache2-mod-php5  > /dev/null 2>&1 
+     apt-get install apache2 libapache2-mod-php5  > /dev/null 2>&1
 file=$( echo /etc/apache2/conf-enabled/security.conf )
 #replace ServerTokens and ServerSignature
 sed -i 's/ServerTokens/ServerTokens Prod  # /g' $file
 sed -i 's/ServerSignature/ServerSignature Off # /g' $file
 echo "<Directory />
-            Options -Indexes 
+            Options -Indexes
         </Directory>" >> $file
 #Critical File Permissions
     chown -R root:root /etc/apache2
@@ -114,10 +114,10 @@ echo -n "Should PHP5 Be Installed/Reinstalled? [Y/n] "
 read option
 if [[ $option =~ ^[Yy]$ ]]
 then
-     apt-get install python-software-properties -y > /dev/null 2>&1 
+     apt-get install python-software-properties -y > /dev/null 2>&1
     add-apt-repository ppa:ondrej/php5-oldstable
-    apt-get update -y > /dev/null 2>&1 
-    apt-get install -y php5 > /dev/null 2>&1 
+    apt-get update -y > /dev/null 2>&1
+    apt-get install -y php5 > /dev/null 2>&1
     file=$(echo /etc/php5/apache2/php.ini)
 
     #At the end of each of these lines is a ; instead of a #, this is b/c this configuration has different syntax than bash and the ; tells it to comment the rest out.
@@ -125,13 +125,13 @@ then
     sed -i 's/expose_php/expose_php=Off ; /g' $file
 sed -i 's/allow_url_fopen/allow_url_fopen=Off ; /g' $file
 sed -i 's/allow_url_include/allow_url_include=Off ; /g' $file
-#disable_functions 
+#disable_functions
 sed -i 's/disable_functions=/disable_functions=exec,shell_exec,passthru,system,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source,proc_open,pcntl_exec,/g' $file
 sed -i 's/upload_max_filesize/upload_max_filesize = 2M ; /g' $file
 sed -i 's/max_execution_time/max_execution_time = 30 ; /g' $file
 sed -i 's/max_input_time/max_input_time = 60 ; /g' $file
 else
-      dpkg --purge php5 > /dev/null 2>&1 
+      dpkg --purge php5 > /dev/null 2>&1
 fi
 """
 
@@ -221,7 +221,7 @@ echo "" >> WorkProperly.txt
 echo "Finished with SSH"
 
 else
-    dpkg --purge ssh openssh-server openssh-client > /dev/null 2>&1 
+    dpkg --purge ssh openssh-server openssh-client > /dev/null 2>&1
 fi
 """
 
@@ -298,7 +298,7 @@ for (( i=0; $i<$tLen; i++)); do
 echo -n "Remove ${packageName[$i]} ? [Y/N]" #the -n option means don’t add new line after output
 read option
 if [[ $option =~ ^[Yy]$ ]]; then
-            dpkg --purge ${dpkgName[$i]}  
+            dpkg --purge ${dpkgName[$i]}
 fi
 fi
 done;
@@ -315,7 +315,7 @@ echo "Media files:" > allMediaFiles.txt
 
 #Uses find, looks for type of regular file that has either permissions of suid of 2000 or 4000
 echo "Suspicious SUID permission files" > suspectFind.txt
-find / -type f \( -perm -04000 -o -perm -02000 \) >> suspectFind.txt 
+find / -type f \( -perm -04000 -o -perm -02000 \) >> suspectFind.txt
 echo "" >> suspectFind.txt
 echo "Finished looking for suspicious files with SUID permissions"
 
@@ -330,22 +330,22 @@ echo "Finished looking for suspicious files with SUID permissions"
 scan_with_tools = """#!/bin/bash
 #Runs rkhunter and saves any warnings
 (echo "rkhunter says:" >> rkhunter.txt; rkhunter -c --rwo >> rkhunter.txt; echo "" >> rkhunter.txt; echo "Finished rkhunter scan" ) &
-disown; sleep 2; 
+disown; sleep 2;
 
 #run chkrootkit and save output into Warnings
 ( echo "Chkrootkit found (NOTE There may be false positives):" >> chkrootkit.txt; chkrootkit -q >> chkrootkit.txt; echo "" >> chkrootkit.txt; echo "Finished chkrootkit scan" ) &
-disown; sleep 2; 
+disown; sleep 2;
 
-
+https://www.blackviper.com/service-configurations/black-vipers-windows-10-service-configurations/
 #runs Debsums to check and see if there are any weirdly changed files around
 ( echo "Debsums says:" >> debsums.txt; debsums -a -s >> debsums.txt 2>&1; echo "" >> debsums.txt; echo "Finished debsums scan" ) &
-disown; sleep 2; 
+disown; sleep 2;
 
 
 #install Clamav onto the computer and begin running it
 #apt-get install clamav	gets installed earlier
 ( freshclam; clamscan -r --bell -i / >> Clamav.txt; echo "Finished Clamav scanning" ) &
-disown; sleep 2; 
+disown; sleep 2;
 
 #Starts lynis, which helps in securing computer
 ( lynis -c -Q >> LynisOutput.txt; echo "Finished Lynis" ) &
@@ -376,7 +376,7 @@ echo "password requisite pam_pwhistory.so use_authtok remember=24" >>  /etc/pam.
 
 #Add basic lockout policy
 cp /etc/pam.d/common-auth /etc/pam.d/common-auth~
-echo "auth [success=1 default=ignore] pam_unix.so nullok_secure 
+echo "auth [success=1 default=ignore] pam_unix.so nullok_secure
 auth required pam_deny.so 	#was requisite
 auth required pam_permit.so
 auth required pam_tally2.so onerr=fail deny=3 unlock_time=1800" > /etc/pam.d/common-auth
@@ -409,7 +409,7 @@ net.ipv4.icmp_echo_ignore_broadcasts = 1
 
 # Disable source packet routing
 net.ipv4.conf.all.accept_source_route = 0
-net.ipv6.conf.all.accept_source_route = 0 
+net.ipv6.conf.all.accept_source_route = 0
 net.ipv4.conf.default.accept_source_route = 0
 net.ipv6.conf.default.accept_source_route = 0
 
@@ -430,7 +430,7 @@ net.ipv4.icmp_ignore_bogus_error_responses = 1
 # Ignore ICMP redirects
 net.ipv4.conf.all.accept_redirects = 0
 net.ipv6.conf.all.accept_redirects = 0
-net.ipv4.conf.default.accept_redirects = 0 
+net.ipv4.conf.default.accept_redirects = 0
 net.ipv6.conf.default.accept_redirects = 0
 
 # Ignore Directed pings
@@ -547,7 +547,7 @@ echo "Working on ufw"
 aliases_and_ctrlaltdel = """#!/bin/bash
 #Remove unwanted alias
 echo "Bad Aliases:" > AliasesAndFunctions.txt
-for i in $(echo $(alias | grep -vi -e "alias egrep='egrep --color=auto'" -e "alias fgrep='fgrep --color=auto'" -e "alias grep='grep --color=auto'" -e "alias l='ls -CF'" -e "alias la='ls -A'" -e "alias ll='ls -alF'" -e "alias ls='ls --color=auto'" | cut -f 1 -d=) | cut -f 2 -d ' ') ; do 
+for i in $(echo $(alias | grep -vi -e "alias egrep='egrep --color=auto'" -e "alias fgrep='fgrep --color=auto'" -e "alias grep='grep --color=auto'" -e "alias l='ls -CF'" -e "alias la='ls -A'" -e "alias ll='ls -alF'" -e "alias ls='ls --color=auto'" | cut -f 1 -d=) | cut -f 2 -d ' ') ; do
     echo $(alias | grep -e $i)  >> AliasesAndFunctions.txt;
     unalias $i;
 done
@@ -601,18 +601,18 @@ root	ALL=(ALL:ALL) ALL
 echo "#
 # As of Debian version 1.7.2p1-1, the default /etc/sudoers file created on
 # installation of the package now includes the directive:
-# 
+#
 # 	#includedir /etc/sudoers.d
-# 
-# This will cause sudo to read and parse any files in the /etc/sudoers.d 
+#
+# This will cause sudo to read and parse any files in the /etc/sudoers.d
 # directory that do not end in '~' or contain a '.' character.
-# 
+#
 # Note that there must be at least one file in the sudoers.d directory (this
 # one will do), and all files in this directory should be mode 0440.
-# 
-# Note also, that because sudoers contents can vary widely, no attempt is 
+#
+# Note also, that because sudoers contents can vary widely, no attempt is
 # made to add this directive to existing sudoers files on upgrade.  Feel free
-# to add the above directive to the end of your /etc/sudoers file to enable 
+# to add the above directive to the end of your /etc/sudoers file to enable
 # this functionality for existing installations if you wish!
 #" > /etc/sudoers.d/README
 
@@ -628,12 +628,12 @@ echo "" >> WorkProperly.txt
 echo "Finished with sudoers, fixed main sudoers and cleaned README and tried to delete any other ones"
 fi
 """
-		 
 
-bash_scripts = {'permissions':permissions, 'find_bad_packs':find_bad_packs, 'security_tools':security_tools, 'vsftpd':vsftpd, 
-                'apache2':apache2, 'php':php, 'ssh':ssh, 'netcat':netcat, 'remove_bad_packs':remove_bad_packs, 'sus_files_and_dirs':sus_files_and_dirs, 
+
+bash_scripts = {'permissions':permissions, 'find_bad_packs':find_bad_packs, 'security_tools':security_tools, 'vsftpd':vsftpd,
+                'apache2':apache2, 'php':php, 'ssh':ssh, 'netcat':netcat, 'remove_bad_packs':remove_bad_packs, 'sus_files_and_dirs':sus_files_and_dirs,
                 'scan_with_tools':scan_with_tools, 'hosts':hosts, 'cron':cron, 'cookie':cookie, 'daily_updates':daily_updates,
-                'path_var':path_var, 'dns_cache':dns_cache, 'lock_root':lock_root, 'firewall':firewall, 'aliases_and_ctrlaltdel':aliases_and_ctrlaltdel, 
+                'path_var':path_var, 'dns_cache':dns_cache, 'lock_root':lock_root, 'firewall':firewall, 'aliases_and_ctrlaltdel':aliases_and_ctrlaltdel,
                 'sudoers':sudoers}
 
 def make_file(filename, text):
@@ -645,7 +645,7 @@ def run(filename):
     """Takes a list of commands as input and runs them"""
     a = os.popen(f'./{filename}')
     print(a)
-    
+
 def update():
     """update and upgrade system"""
     run(["apt-get update -y && apt-get upgrade -y"])
@@ -654,7 +654,7 @@ def make_all_files():
     """create bash scripts"""
     for name, script in bash_scripts.items():
         make_file(name, script)
-        
+
 def make_all_executable():
     """make all bash scripts executable from command line"""
     for name in bash_scripts.keys():
@@ -669,7 +669,7 @@ def run_all_modules():
 # 			 php, ssh, netcat, remove_bad_packs, sus_files_and_dirs, scan_with_tools,
 #			 tree_home_and_set_pass_policy, hosts, cron, cookie, daily_updates,
 #			 path_var, dns_cache, lock_root, firewall, aliases_and_ctrlaltdel, sudoers
-#	
+#
 # CALL FUNCTIONS HERE:
 
 make_all_files()
