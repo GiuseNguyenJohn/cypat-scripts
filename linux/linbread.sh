@@ -185,7 +185,7 @@ update (){
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	apt install -y firefox openssh vim
+	apt install -y firefox openssh vim tree
 }
 
 while getopts "Aud:gsn" options; do
