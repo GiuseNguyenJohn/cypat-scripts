@@ -95,7 +95,7 @@ configure_new_group (){
 
 configure_ssh (){
 	echo "${GREEN}[+] Configuring SSH securely (/etc/ssh/sshd_config)!${NC}"
-	mv /etc/ssh/sshd_config /etc/ssh/sshd_config.old
+	cp /etc/ssh/sshd_config /etc/ssh/sshd_config.old
 	sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 	sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
 	sed -i "s/DisableForwarding no/DisableForwarding yes/g" /etc/ssh/sshd_config
