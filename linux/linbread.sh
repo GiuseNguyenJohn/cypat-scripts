@@ -160,8 +160,9 @@ configure_apache2 (){
 	# Files: /etc/apache2/conf-enabled/security.conf
 	# 		 /etc/apache2/apache2.conf
 	cp /etc/apache2/conf-enabled/security.conf /etc/apache2/conf-enabled/security.conf.old
-	sed -i "s///g" /etc/apache2/conf-enabled/security.conf
-
+	cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.old
+	sed -i "s/ServerTokens/ServerTokens Prod  # /g" /etc/apache2/conf-enabled/security.conf
+	sed -i "s/ServerSignature/ServerSignature Off # /g" /etc/apache2/conf-enabled/security.conf
 
 delete_media (){
 	echo "${RED}[+] Deleting media files!${NC}"
