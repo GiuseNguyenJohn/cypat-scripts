@@ -159,6 +159,8 @@ configure_apache2 (){
 	echo "${GREEN}[+] Configuring apache2 (/etc/apache2/apache2.conf)${NC}"
 	# Files: /etc/apache2/conf-enabled/security.conf
 	# 		 /etc/apache2/apache2.conf
+	cp /etc/apache2/conf-enabled/security.conf /etc/apache2/conf-enabled/security.conf.old
+	sed -i "s///g" /etc/apache2/conf-enabled/security.conf
 
 
 delete_media (){
