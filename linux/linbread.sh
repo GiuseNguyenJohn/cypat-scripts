@@ -33,15 +33,16 @@ ITALIC="${C}[3m"
 ###########################################
 
 ALL_MODULES=(
+update_apps_services \
 configure_ssh \
 configure_samba \
 configure_network \
 configure_vsftpd \
+configure_apache2 \
 delete_media \
 enable_ufw \
 remove_packages \
 stop_services \
-update_apps_services \
 update \
 )
 # Modules not in ALL_MODULES: print_usage remove_users add_user configure_new_group
@@ -55,6 +56,7 @@ ${NC}This script parses the README.txt file, then implements security measures $
 		${YELLOW}-g ${BLUE} Add new group and users to the group
 		${YELLOW}-s ${BLUE} Configure Samba (/etc/smb.conf)
 		${YELLOW}-n ${BLUE} Configure network settings (/etc/sysctl.conf)
+		${YELLOW}-a ${BLUE} Configure apache2 (/etc/apache2/apache2.conf)
     ${GREEN}Misc.
         ${YELLOW}-h ${BLUE} To show this message${NC}
 "
@@ -161,8 +163,11 @@ configure_apache2 (){
 	# 		 /etc/apache2/apache2.conf
 	cp /etc/apache2/conf-enabled/security.conf /etc/apache2/conf-enabled/security.conf.old
 	cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.old
+	# https://hostadvice.com/how-to/how-to-harden-your-apache-web-server-on-ubuntu-18-04/
 	sed -i "s/ServerTokens/ServerTokens Prod  # /g" /etc/apache2/conf-enabled/security.conf
 	sed -i "s/ServerSignature/ServerSignature Off # /g" /etc/apache2/conf-enabled/security.conf
+	systemctl enable apache2
+	systemctl restart apache2
 
 delete_media (){
 	echo "${RED}[+] Deleting media files!${NC}"
@@ -202,7 +207,7 @@ update (){
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	apt install -y firefox openssh vim tree
+	apt install -y firefox openssh vim tree libapache2-mod-security2 libapache2-mod-evasive
 }
 
 while getopts "Aud:gsn" options; do
