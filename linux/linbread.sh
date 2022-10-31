@@ -149,7 +149,7 @@ configure_vsftpd (){
 
 }
 
-configure_apache2 (){
+configure_apache2m(){
 	echo "${GREEN}[+] Configuring vsftpd (/etc/vsftpd/vsftpd.conf)${NC}"
 
 delete_media (){
