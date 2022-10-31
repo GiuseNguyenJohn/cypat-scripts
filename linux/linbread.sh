@@ -156,7 +156,10 @@ configure_vsftpd (){
 }
 
 configure_apache2 (){
-	echo "${GREEN}[+] Configuring apache2 (/etc/vsftpd/vsftpd.conf)${NC}"
+	echo "${GREEN}[+] Configuring apache2 (/etc/apache2/apache2.conf)${NC}"
+	# Files: /etc/apache2/conf-enabled/security.conf
+	# 		 /etc/apache2/apache2.conf
+
 
 delete_media (){
 	echo "${RED}[+] Deleting media files!${NC}"
