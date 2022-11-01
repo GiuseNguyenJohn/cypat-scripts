@@ -60,7 +60,8 @@ ${NC}This script parses the README.txt file, then implements security measures $
     ${GREEN}Misc.
         ${YELLOW}-h ${BLUE} To show this message${NC}
 "
-FE
+if uname 2>/dev/null | grep -qi 'Fedora' || /usr/bin/uname 2>/dev/null | grep -qi 'Fedora'; then FEDORA="1"; else FEDORA=""; fi
+
 ###########################################
 #------------) Main functions (-----------#
 ###########################################
