@@ -168,6 +168,7 @@ configure_apache2 (){
 	sed -i "s/ServerSignature/ServerSignature Off # /g" /etc/apache2/conf-enabled/security.conf
 	systemctl enable apache2
 	systemctl restart apache2
+}
 
 delete_media (){
 	echo "${RED}[+] Deleting media files!${NC}"
