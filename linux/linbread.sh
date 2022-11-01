@@ -60,7 +60,7 @@ ${NC}This script parses the README.txt file, then implements security measures $
     ${GREEN}Misc.
         ${YELLOW}-h ${BLUE} To show this message${NC}
 "
-
+FE
 ###########################################
 #------------) Main functions (-----------#
 ###########################################
