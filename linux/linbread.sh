@@ -219,7 +219,7 @@ update_apps_services (){
 	apt install -y firefox openssh vim tree libapache2-mod-security2 libapache2-mod-evasive
 }
 
-while getopts "Aud:gsnp" options; do
+while getopts "Aud:gsn" options; do
 	case "${options}" in
     	A)
         	echo "[+] Executing all modules!"
