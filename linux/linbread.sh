@@ -34,6 +34,7 @@ ITALIC="${C}[3m"
 
 ALL_MODULES=(
 update_apps_services \
+change_user_passwords
 configure_ssh \
 configure_samba \
 configure_network \
@@ -57,6 +58,7 @@ ${NC}This script parses the README.txt file, then implements security measures $
 		${YELLOW}-s ${BLUE} Configure Samba (/etc/smb.conf)
 		${YELLOW}-n ${BLUE} Configure network settings (/etc/sysctl.conf)
 		${YELLOW}-a ${BLUE} Configure apache2 (/etc/apache2/apache2.conf)
+		${YELLOW}-p ${BLUE} Change all user passwords
     ${GREEN}Misc.
         ${YELLOW}-h ${BLUE} To show this message${NC}
 "
@@ -75,11 +77,11 @@ add_user (){
 	useradd esinclair
 }
 
-change_user_passwd (){
+change_user_passwords (){
 	echo "${GREEN}[+] Changing weak passwords!${NC}"
-	USERS=(jhopper jbyers kwheeler mbrenner wbyers mmayfield bhargrove bnewby sowens rbuckley mbauman argyle emunson gareth jeff cpowell hwheeler ocallahan sbingham dantonov alexei )
-	for USER in "${USERS[@]}"; do
-		usermod --password $(echo n3w_passwd123$ | openssl passwd -1 -stdin) $USER
+	USERS=$(awk -F: '{ print $1}' /etc/passwd | (readarray -t ARRAY; IFS=' '; echo "${ARRAY[*]}"))
+	for USER in $USERS; do
+		usermod --password $(echo n3w_passwd123^ | openssl passwd -1 -stdin) $USER
 	done
 }
 
@@ -204,7 +206,12 @@ stop_services (){
 
 update (){
 	echo "${GREEN}[+] Updating and upgrading system!${NC}"
+	# configure automatic updates for apt
+	echo "APT::Periodic::Update-Package-Lists \"1\";
+	APT::Periodic::Download-Upgradeable-Packages \"0\";
+	APT::Periodic::AutocleanInterval \"0\";" > /etc/apt/apt.conf.d/10periodic
 	apt update -y && apt upgrade -y
+	service --status-all
 }
 
 update_apps_services (){
@@ -212,7 +219,7 @@ update_apps_services (){
 	apt install -y firefox openssh vim tree libapache2-mod-security2 libapache2-mod-evasive
 }
 
-while getopts "Aud:gsn" options; do
+while getopts "Aud:gsnp" options; do
 	case "${options}" in
     	A)
         	echo "[+] Executing all modules!"
