@@ -169,6 +169,7 @@ configure_apache2 (){
 	# https://hostadvice.com/how-to/how-to-harden-your-apache-web-server-on-ubuntu-18-04/
 	sed -i "s/ServerTokens/ServerTokens Prod  # /g" /etc/apache2/conf-enabled/security.conf
 	sed -i "s/ServerSignature/ServerSignature Off # /g" /etc/apache2/conf-enabled/security.conf
+	# https://linuxhint.com/secure_apache_server/
 	systemctl enable apache2
 	systemctl restart apache2
 }
