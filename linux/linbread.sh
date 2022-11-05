@@ -237,7 +237,7 @@ update (){
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	apt install -y firefox openssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive thunderbird perl
+	apt install -y firefox ssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive thunderbird perl
 }
 
 while getopts "Aud:gsn" options; do
