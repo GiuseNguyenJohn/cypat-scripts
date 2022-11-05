@@ -33,18 +33,19 @@ ITALIC="${C}[3m"
 ###########################################
 
 ALL_MODULES=(
+update \
 update_apps_services \
 change_user_passwords
 configure_ssh \
-configure_samba \
+# configure_samba \
 configure_network \
 configure_vsftpd \
-configure_apache2 \
+# configure_apache2 \
 delete_media \
+download_mozilla_ppa \
 enable_ufw \
 remove_packages \
 stop_services \
-update \
 )
 # Modules not in ALL_MODULES: print_usage remove_users add_user configure_new_group
 HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Fedora 36 machine.
@@ -191,6 +192,13 @@ delete_media (){
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
 
+download_mozilla_ppa (){
+	echo "${RED}[+] Downloading Mozilla from PPA!${NC}"
+	snap remove firefox
+	add-apt-repository ppa:mozillateam/ppa
+	apt install firefox
+}
+
 enable_ufw (){
 	echo "${GREEN}[+] Enabling and configuring firewall!${NC}"
 	ufw enable
@@ -229,7 +237,7 @@ update (){
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	apt install -y firefox openssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive
+	apt install -y firefox openssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive thunderbird perl
 }
 
 while getopts "Aud:gsn" options; do
