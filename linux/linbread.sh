@@ -174,6 +174,17 @@ configure_apache2 (){
 	systemctl restart apache2
 }
 
+configure_sql (){
+	echo "${RED}[+] Configuring SQL (/etc/mysql/my.cnf)${NC}"
+	# Files:
+
+	# https://www.techrepublic.com/article/how-to-harden-mysql-security-with-a-single-command/
+	# https://blog.0daylabs.com/2014/01/09/12-steps-for-hardening-mysql-from-attackers/
+	# https://www.tecmint.com/mysql-mariadb-security-best-practices-for-linux/
+	sudo mysql_secure_installation
+	systemctl restart mysql
+}
+
 delete_media (){
 	echo "${RED}[+] Deleting media files!${NC}"
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
@@ -217,7 +228,7 @@ update (){
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	apt install -y firefox openssh vim tree libapache2-mod-security2 libapache2-mod-evasive
+	apt install -y firefox openssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive
 }
 
 while getopts "Aud:gsn" options; do
