@@ -182,6 +182,7 @@ configure_sql (){
 	# https://blog.0daylabs.com/2014/01/09/12-steps-for-hardening-mysql-from-attackers/
 	# https://www.tecmint.com/mysql-mariadb-security-best-practices-for-linux/
 	sudo mysql_secure_installation
+	sed -i "s///g" /etc/mysql/my.cnf
 	systemctl restart mysql
 }
 
