@@ -1,6 +1,17 @@
 #!/bin/bash
 # Author: John Nguyen
 
+# TODO:
+# vsftpd - disable write access, changing share permissions, disable users, SSL enabled, lost file restored (2nd forensics question
+# ASLR enabled
+# Dirty Pipe CVE remediation
+# Killing a netcat backdoor (cron job created by lawrence that uses dash shell)
+# Uninstalled Nginx, NFS, ophcrack
+# Passwords: min and max age (/etc/login.defs)
+# UFW
+# Applications: update (Thunderbird), install p7zip desktop,
+# Users: Change weak password, remove unauthorized user, add user to new group, make users not administrators
+
 ###########################################
 #---------------) Colors (----------------#
 ###########################################
