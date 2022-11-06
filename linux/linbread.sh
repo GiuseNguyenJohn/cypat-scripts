@@ -205,12 +205,12 @@ delete_media (){
 
 disable_root_login_gdm (){
 	echo "${RED}[+] Disabling root login for gdm3! (/etc/pam.d/gdm)${NC}"
-	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"
-	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm
-	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm-autologin
-	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm-fingerprint
-	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm-password
-	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm-smartcard
+	# https://unix.stackexchange.com/questions/447632/how-to-prevent-root-login-from-gnome-3-login-screen-arch-linux
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so" >> /etc/pam.d/gdm
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so" >> /etc/pam.d/gdm-autologin
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so" >> /etc/pam.d/gdm-fingerprint
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so" >> /etc/pam.d/gdm-password
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so" >> /etc/pam.d/gdm-smartcard
 }
 
 download_mozilla_ppa (){
