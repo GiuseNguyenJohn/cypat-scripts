@@ -203,6 +203,16 @@ delete_media (){
 	find /home -type f -name "*.mp[34]" -exec bash -c "rm -rf \"{}\" && echo \"	[+] Removed {}!\"" \;
 }
 
+disable_root_login_gdm (){
+	echo "${RED}[+] Disabling root login for gdm3! (/etc/pam.d/gdm)${NC}"
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm-autologin
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm-fingerprint
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm-password
+	echo "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"/etc/pam.d/gdm-smartcard
+}
+
 download_mozilla_ppa (){
 	echo "${RED}[+] Downloading Mozilla from PPA!${NC}"
 	snap remove firefox
