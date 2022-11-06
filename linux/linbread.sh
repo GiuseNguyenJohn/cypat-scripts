@@ -3,14 +3,15 @@
 
 # TODO:
 # vsftpd - disable write access, changing share permissions, disable users, SSL enabled, lost file restored (2nd forensics question
-# ASLR enabled
+# Updates: check daily, software update source includes security updates
+# Kernel: ASLR enabled, NX enabled
 # Dirty Pipe CVE remediation
 # Killing a netcat backdoor (cron job created by lawrence that uses dash shell)
 # Uninstalled Nginx, NFS, ophcrack
-# Passwords: min and max age (/etc/login.defs)
-# UFW
-# Applications: update (Thunderbird), install p7zip desktop,
-# Users: Change weak password, remove unauthorized user, add user to new group, make users not administrators
+# Password min and max age (/etc/login.defs)
+# UFW enabled
+# Applications: update (Thunderbird), install p7zip desktop, Firefox HTTPS-only mode enabled for all windows
+# Users: Change weak password, remove unauthorized user, add user to new group, make users not administrators, disable root login through GDM
 
 ###########################################
 #---------------) Colors (----------------#
