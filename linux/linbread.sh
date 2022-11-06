@@ -153,7 +153,9 @@ configure_network (){
 	sed -i "s/^.*net.ipv4.conf.default.rp_filter.*$/net.ipv4.conf.default.rp_filter=1/g" /etc/sysctl.conf
 	# Ignore ICMP broadcast requests
 	sed -i "s/^.*net.ipv4.icmp_echo_ignore_broadcasts.*$/net.ipv4.icmp_echo_ignore_broadcasts=1/g" /etc/sysctl.conf
-
+	# kernel protections
+	echo "kernel.exec-shield = 1 # CHANGED" >> /etc/sysctl.conf
+	echo "kernel.randomize_va_space = 1 # CHANGED" >> /etc/sysctl.conf
 	sysctl -p
 }
 
