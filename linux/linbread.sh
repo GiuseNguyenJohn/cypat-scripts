@@ -162,7 +162,7 @@ configure_network (){
 
 configure_vsftpd (){
 	echo "${GREEN}[+] Configuring vsftpd (/etc/vsftpd.conf)!${NC}"
-	# Files:  /etc/vsftpd/ftpusers, /etc/vsftpd/user_list
+	# Files: /etc/vsftpd.conf /etc/ftpusers /etc/user_list
 	cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.old
 	# https://likegeeks.com/ftp-server-linux/#:~:text=You%20can%20secure%20your%20FTP,users%20to%20access%20the%20service.&text=The%20file%20%2Fetc%2Fvsftpd.,files%20and%20restart%20your%20service.
 	sed -i "s/^.*write_enable.*$/write_enable=NO/g" /etc/vsftpd.conf
