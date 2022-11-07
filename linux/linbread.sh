@@ -71,7 +71,6 @@ ${NC}This script parses the README.txt file, then implements security measures $
 		${YELLOW}-s ${BLUE} Configure Samba (/etc/smb.conf)
 		${YELLOW}-n ${BLUE} Configure network settings (/etc/sysctl.conf)
 		${YELLOW}-a ${BLUE} Configure apache2 (/etc/apache2/apache2.conf)
-		${YELLOW}-p ${BLUE} Change all user passwords
     ${GREEN}Misc.
         ${YELLOW}-h ${BLUE} To show this message${NC}
 "
