@@ -2,16 +2,16 @@
 # Author: John Nguyen
 
 # TODO:
-# vsftpd - disable write access, changing share permissions, disable users, SSL enabled, lost file restored (2nd forensics question
-# Updates: check daily, software update source includes security updates
-# Kernel: ASLR enabled, NX enabled
+# DONE - vsftpd - disable write access, changing share permissions, disable users, SSL enabled, lost file restored (2nd forensics question
+# DONE - Updates: check daily, software update source includes security updates
+# DONE - Kernel: ASLR enabled, NX enabled
 # Dirty Pipe CVE remediation
 # Killing a netcat backdoor (cron job created by lawrence that uses dash shell)
-# Uninstalled Nginx, NFS, ophcrack
-# Password min and max age (/etc/login.defs)
-# UFW enabled
+# DONE - Uninstalled Nginx, NFS, ophcrack, nc binary
+# DONE - Password min and max age (/etc/login.defs)
+# DONE - UFW enabled
 # Applications: update (Thunderbird), install p7zip desktop, Firefox HTTPS-only mode enabled for all windows
-# Users: Change weak password, remove unauthorized user, add user to new group, make users not administrators, disable root login through GDM
+# DONE - Users: Change weak password, remove unauthorized user, add user to new group, make users not administrators, disable root login through GDM
 
 ###########################################
 #---------------) Colors (----------------#
@@ -51,10 +51,11 @@ change_user_passwords
 configure_ssh \
 # configure_samba \
 configure_network \
-configure_vsftpd \
+configure_password_policy \
+# configure_vsftpd \
 # configure_apache2 \
 delete_media \
-download_mozilla_ppa \
+# download_mozilla_ppa \
 enable_ufw \
 remove_packages \
 stop_services \
@@ -113,6 +114,7 @@ configure_new_group (){
 configure_ssh (){
 	echo "${GREEN}[+] Configuring SSH securely (/etc/ssh/sshd_config)!${NC}"
 	cp /etc/ssh/sshd_config /etc/ssh/sshd_config.old
+	chmod 0700 /etc/ssh/sshd_config
 	sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 	sed -i "s/X11Forwarding yes/X11Forwarding no/g" /etc/ssh/sshd_config
 	sed -i "s/DisableForwarding no/DisableForwarding yes/g" /etc/ssh/sshd_config
@@ -125,6 +127,7 @@ configure_samba () {
 	echo "${GREEN}[+] Configuring samba (/etc/smb.conf)!${NC}"
 	# Files: /etc/smb.conf, /etc/rc.d/init.d/smb, /etc/logrotate.d/samba, /etc/pam.d/samba
 	cp /etc/smb.conf /etc/smb.conf.old
+	chmod 0700 /etc/smb.conf
 	# https://www.linuxtopia.org/online_books/linux_system_administration/securing_and_optimizing_linux/chap29sec284.html
 	sed -i "s/^.*encrypt passwords = .*$/encrypt passwords = True/g" /etc/smb.conf
 	sed -i "s/^.*security = .*$/security = user/g" /etc/smb.conf
@@ -133,7 +136,7 @@ configure_samba () {
 	sed -i "s/^.*bind interfaces only = .*$/bind interfaces only = True/g" /etc/smb.conf
 	sed -i "s/^.*hosts deny = .*$/host deny = ALL/g" /etc/smb.conf
 	# https://www.linuxtopia.org/online_books/linux_system_administration/securing_and_optimizing_linux/chap29sec286.html
-	chmod 600 /etc/smbpasswd
+	chmod 0700 /etc/smbpasswd
 	systemctl enable smbd
 	systemctl enable nmbd
 	systemctl restart nmbd
@@ -143,6 +146,7 @@ configure_samba () {
 configure_network (){
 	echo "${GREEN}[+] Configuring network settings (/etc/sysctl.conf)!${NC}"
 	cp /etc/sysctl.conf /etc/sysctl.conf.old
+	chmod 0700 /etc/sysctl.conf
 	# enable TCP/IP SYN cookies
 	sed -i "s/^.*net.ipv4.tcp_syncookies.*$/net.ipv4.tcp_syncookies=1/g" /etc/sysctl.conf
 	# Do not accept ICMP redirects (prevent MITM attacks)
@@ -159,15 +163,26 @@ configure_network (){
 	sysctl -p
 }
 
+configure_password_policy (){
+	echo "${GREEN}[+] Configuring password policy (/etc/login.defs)!${NC}"
+	cp /etc/login.defs /etc/login.defs.old
+	chmod 0700 /etc/login.defs
+	sed -i "s/PASS_MAX_DAYS/PASS_MAX_DAYS   90 #/g"
+	sed -i "s/PASS_MIN_DAYS/PASS_MIN_DAYS   10 #/g"
+	# make sure only the user has access to their home directory
+	sed -i "s/UMASK/UMASK       077 #/g"
+}
+
 configure_vsftpd (){
 	echo "${GREEN}[+] Configuring vsftpd (/etc/vsftpd.conf)!${NC}"
 	# Files: /etc/vsftpd.conf /etc/ftpusers /etc/user_list
 	cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.old
+	chmod 0700 /etc/vsftpd/vsftpd.conf
 	# https://likegeeks.com/ftp-server-linux/#:~:text=You%20can%20secure%20your%20FTP,users%20to%20access%20the%20service.&text=The%20file%20%2Fetc%2Fvsftpd.,files%20and%20restart%20your%20service.
 	sed -i "s/^.*write_enable.*$/write_enable=NO/g" /etc/vsftpd.conf
 	sed -i "s/^.*anonymous_enable.*$/anonymous_enable=NO/g" /etc/vsftpd.conf
 	sed -i "s/^.*chroot_local_user.*$/chroot_local_user=YES/g" /etc/vsftpd.conf
-	sed -i "s/^.*write_enable.*$/write_enable=NO/g" /etc/vsftpd.conf
+	sed -i "s/^.*ssl_enable.*$/ssl_enable=YES/g" /etc/vsftpd.conf
 	# TODO: deny root ftp login
 	systemctl enable vsftpd
 	systemctl restart vsftpd
@@ -180,6 +195,7 @@ configure_apache2 (){
 	# 		 /etc/apache2/apache2.conf
 	cp /etc/apache2/conf-enabled/security.conf /etc/apache2/conf-enabled/security.conf.old
 	cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.old
+	chmod 0700 /etc/apache2/apache2.conf
 	# https://hostadvice.com/how-to/how-to-harden-your-apache-web-server-on-ubuntu-18-04/
 	sed -i "s/ServerTokens/ServerTokens Prod  # /g" /etc/apache2/conf-enabled/security.conf
 	sed -i "s/ServerSignature/ServerSignature Off # /g" /etc/apache2/conf-enabled/security.conf
@@ -189,14 +205,16 @@ configure_apache2 (){
 }
 
 configure_sql (){
-	echo "${RED}[+] Configuring SQL (/etc/mysql/my.cnf)${NC}"
+	echo "${GREEN}[+] Configuring SQL (/etc/mysql/my.cnf)${NC}"
 	# Files:
 
 	# https://www.techrepublic.com/article/how-to-harden-mysql-security-with-a-single-command/
 	# https://blog.0daylabs.com/2014/01/09/12-steps-for-hardening-mysql-from-attackers/
 	# https://www.tecmint.com/mysql-mariadb-security-best-practices-for-linux/
-	sudo mysql_secure_installation
-	sed -i "s///g" /etc/mysql/my.cnf
+	# https://medium.com/linode-cube/5-essential-steps-to-hardening-your-mysql-database-591e477bbbd7
+	mysql_secure_installation
+	chmod 0700 /etc/mysql/my.cnf
+	echo "set-variable=local-infile=0" >> /etc/mysql/my.cnf
 	systemctl restart mysql
 }
 
@@ -216,7 +234,7 @@ disable_root_login_gdm (){
 }
 
 download_mozilla_ppa (){
-	echo "${RED}[+] Downloading Mozilla from PPA!${NC}"
+	echo "${GREEN}[+] Downloading Mozilla from PPA!${NC}"
 	snap remove firefox
 	add-apt-repository ppa:mozillateam/ppa
 	apt install firefox
@@ -238,8 +256,8 @@ remove_users (){
 
 remove_packages (){
 	echo "${RED}[+] Removing bad packages!${NC}"
-	apt remove -y "gameconqueror" "*wireshark*" "*telnet*" "*tightvnc*" "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" "*logkeys*" "*john*" "*frostwire*" "vuze" "*netcat*" "*weplab*" "pyrit"
-	apt remove -y "tcpdump" "telnet" "deluge" "hydra" "hydra-gtk" "nmap" "ophcrack"
+	apt remove -y "gameconqueror" "*wireshark*" "*telnet*" "*tightvnc*" "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" "*logkeys*" "*john*" "*frostwire*" "vuze" "*net-tools*" "*weplab*" "pyrit"
+	apt remove -y "tcpdump" "telnet" "deluge" "hydra" "hydra-gtk" "nmap" "ophcrack" "nginx" "nfs" "ophcrack"
 }
 
 stop_services (){
@@ -255,7 +273,6 @@ update (){
 	APT::Periodic::Download-Upgradeable-Packages \"0\";
 	APT::Periodic::AutocleanInterval \"0\";" > /etc/apt/apt.conf.d/10periodic
 	apt update -y && apt upgrade -y
-	service --status-all
 }
 
 update_apps_services (){
