@@ -95,6 +95,8 @@ change_user_passwords (){
 	USERS=$(awk -F: '{ print $1}' /etc/passwd | (readarray -t ARRAY; IFS=' '; echo "${ARRAY[*]}"))
 	for USER in $USERS; do
 		usermod --password $(echo n3w_passwd123^ | openssl passwd -1 -stdin) $USER
+		# expire passwords and force change next logon
+		passwd -e $USER
 	done
 }
 
