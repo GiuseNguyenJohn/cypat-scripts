@@ -50,8 +50,8 @@ update_apps_services \
 change_user_passwords
 configure_ssh \
 # configure_samba \
-configure_network \
-configure_password_policy \
+harden_network \
+harden_password_policy \
 # configure_vsftpd \
 # configure_apache2 \
 delete_media \
@@ -60,7 +60,7 @@ enable_ufw \
 remove_packages \
 stop_services \
 )
-# Modules not in ALL_MODULES: print_usage remove_users add_user configure_new_group
+# Modules not in ALL_MODULES: print_usage remove_users add_user create_new_group
 HELP="${GREEN}Harden and secure an Ubuntu 18, 20 or Fedora 36 machine.
 ${NC}This script parses the README.txt file, then implements security measures ${DG}(AV, hardens applications, removes packages, firewall, system configs, removes users) ${NC}and outputs logs of changes being made.
     ${GREEN}Options
@@ -87,7 +87,7 @@ print_usage (){
 
 add_user (){
 	echo "${GREEN}[+] Adding new user!${NC}"
-	useradd esinclair
+	useradd "$1"
 }
 
 change_user_passwords (){
@@ -105,7 +105,7 @@ change_user_passwords (){
 # 	deluser ulfric sudo
 # }
 
-configure_new_group (){
+create_new_group (){
 	echo "${GREEN}[+] Adding new group and users!${NC}"
 	groupadd dragonfire
 	for USER in "emunson" "gareth" "jeff" "mwheeler" "dhenderson" "lsinclair" "esinclair"; do
@@ -145,8 +145,8 @@ configure_samba () {
 	systemctl restart smbd
 }
 
-configure_network (){
-	echo "${GREEN}[+] Configuring network settings (/etc/sysctl.conf)!${NC}"
+harden_network (){
+	echo "${GREEN}[+] Hardening network settings (/etc/sysctl.conf)!${NC}"
 	cp /etc/sysctl.conf /etc/sysctl.conf.old
 	chmod 0700 /etc/sysctl.conf
 	# enable TCP/IP SYN cookies
@@ -165,14 +165,22 @@ configure_network (){
 	sysctl -p
 }
 
-configure_password_policy (){
-	echo "${GREEN}[+] Configuring password policy (/etc/login.defs)!${NC}"
+harden_password_policy (){
+	echo "${GREEN}[+] Hardening password policy (/etc/login.defs)!${NC}"
 	cp /etc/login.defs /etc/login.defs.old
 	chmod 0700 /etc/login.defs
 	sed -i "s/PASS_MAX_DAYS/PASS_MAX_DAYS   90 #/g"
 	sed -i "s/PASS_MIN_DAYS/PASS_MIN_DAYS   10 #/g"
 	# make sure only the user has access to their home directory
 	sed -i "s/UMASK/UMASK       077 #/g"
+}
+
+harden_pam (){
+	echo "${GREEN}[+] Hardening PAM files!${NC}"
+	# https://github.com/trimstray/the-practical-linux-hardening-guide/wiki/PAM-Module
+	# https://www.redhat.com/sysadmin/pluggable-authentication-modules-pam
+
+
 }
 
 configure_vsftpd (){
@@ -282,7 +290,7 @@ update_apps_services (){
 	apt install -y firefox ssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive thunderbird perl
 }
 
-while getopts "Aud:gsn" options; do
+while getopts "Au:d:gsn" options; do
 	case "${options}" in
     	A)
         	echo "[+] Executing all modules!"
@@ -291,7 +299,7 @@ while getopts "Aud:gsn" options; do
 			done
         	;;
     	u)
-        	add_user
+        	add_user ${OPTARG}
         	;;
 		d)
 		  	# convert comma-separated list into bash array
@@ -299,13 +307,13 @@ while getopts "Aud:gsn" options; do
 			remove_users "${USERS[@]}"
 			;;
 		g)
-			configure_new_group
+			create_new_group
 			;;
 		s)
 			configure_samba
 			;;
 		n)
-			configure_network
+			harden_network
 			;;
     	*)
         	print_usage
