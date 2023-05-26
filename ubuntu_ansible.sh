@@ -5,4 +5,4 @@ sudo apt install -y git ansible
 git clone https://github.com/ansible-lockdown/UBUNTU22-CIS.git
 # already have inventory file
 # copy and paste command below
-# ansible-playbook -i inventory.ini ./UBUNTU22-CIS/site.yml
+# ansible-playbook -i inventory.ini ./UBUNTU22-CIS/site.yml | tee output.txt
