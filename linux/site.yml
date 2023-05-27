@@ -1,0 +1,7 @@
+---
+- hosts: all
+  name: devsec ansible playbook for os and service hardening
+  become: yes
+
+  roles:
+    - os_hardening
