@@ -283,7 +283,7 @@ update (){
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	apt install -y firefox ssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive lynis rkhunter
+	apt install -y firefox ssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive lynis rkhunter clamav clamav-daemon
 }
 
 while getopts "Au:d:gsn" options; do
