@@ -9,6 +9,9 @@
 # file management: https://documentation.suse.com/sles/15-SP2/html/SLES-all/sec-sec-file-management.html
 # - SUID, SGID, sticky bit, world writable dirs
 # check /etc/passwd and remove unneeded accounts
+# disable kernel modules, modprobe?
+# SELinux and AppArmor?
+
 
 ###########################################
 #---------------) Colors (----------------#
@@ -159,7 +162,8 @@ harden_network (){
 	sed -i "s/^.*net.ipv4.icmp_echo_ignore_broadcasts.*$/net.ipv4.icmp_echo_ignore_broadcasts=1/g" /etc/sysctl.conf
 	# kernel protections
 	echo "kernel.exec-shield = 1 # CHANGED" >> /etc/sysctl.conf
-	echo "kernel.randomize_va_space = 1 # CHANGED" >> /etc/sysctl.conf
+	echo "kernel.randomize_va_space = 2 # CHANGED" >> /etc/sysctl.conf
+	echo "kernel.modules_disabled = 1 # CHANGED" >> /etc/sysctl.conf
 	sysctl -p
 }
 
