@@ -11,6 +11,9 @@
 # check /etc/passwd and remove unneeded accounts
 # disable kernel modules, modprobe?
 # SELinux and AppArmor?
+# SSH
+# - idle timeout interval
+# - block ssh brute force attack
 
 
 ###########################################
@@ -114,6 +117,7 @@ create_new_group (){
 	done
 }
 
+# many service configurations here: https://static.open-scap.org/ssg-guides/ssg-ubuntu2204-guide-index.html
 configure_ssh (){
 	echo "${GREEN}[+] Configuring SSH securely (/etc/ssh/sshd_config)!${NC}"
 	cp /etc/ssh/sshd_config /etc/ssh/sshd_config.old
