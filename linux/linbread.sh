@@ -14,6 +14,8 @@
 # SSH
 # - idle timeout interval
 # - block ssh brute force attack
+# iptables and ipchains?
+
 
 
 ###########################################
@@ -294,7 +296,8 @@ update (){
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	apt install -y firefox ssh vim tree guake libapache2-mod-security2 libapache2-mod-evasive lynis rkhunter clamav clamav-daemon
+	apt install -y firefox ssh vim tree guake lynis rkhunter clamav clamav-daemon chkrootkit
+	# apt install -y libapache2-mod-security2 libapache2-mod-evasive
 }
 
 while getopts "Au:d:gsn" options; do
