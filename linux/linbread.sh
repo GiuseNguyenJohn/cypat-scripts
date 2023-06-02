@@ -6,6 +6,8 @@
 # group policy?
 # 	look at table of contents (below)
 # https://static.open-scap.org/ssg-guides/ssg-ubuntu2204-guide-index.html
+# file management: https://documentation.suse.com/sles/15-SP2/html/SLES-all/sec-sec-file-management.html
+# - SUID, SGID, sticky bit, world writable dirs
 
 ###########################################
 #---------------) Colors (----------------#
