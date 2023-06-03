@@ -60,7 +60,9 @@ harden_password_policy \
 harden_pam \
 # configure_vsftpd \
 # configure_apache2 \
+# configure_sql
 delete_media \
+# disable_root_login_gdm
 # download_mozilla_ppa \
 enable_ufw \
 remove_packages \
