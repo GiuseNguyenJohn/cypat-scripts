@@ -277,8 +277,8 @@ remove_users (){
 remove_packages (){
 	echo "${RED}[+] Removing bad packages!${NC}"
 	# might not actually work
-	apt remove -y "*wireshark*" "*telnet*" "*tightvnc*" "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" "*logkeys*" "*john*" "*frostwire*" "vuze" "*net-tools*" "*weplab*" "pyrit"
-	apt remove -y "gameconqueror" "tcpdump" "telnet" "deluge" "hydra" "hydra-gtk" "nmap" "ophcrack" "nginx" "nfs" "ophcrack"
+	dnf remove -y "*wireshark*" "*telnet*" "*tightvnc*" "*nikto*" "*medusa*" "*crack*" "*nmap*" "*fakeroot*" "*logkeys*" "*john*" "*frostwire*" "vuze" "*net-tools*" "*weplab*" "pyrit"
+	dnf remove -y "gameconqueror" "tcpdump" "telnet" "deluge" "hydra" "hydra-gtk" "nmap" "ophcrack" "nginx" "nfs" "ophcrack"
 }
 
 stop_services (){
@@ -289,17 +289,15 @@ stop_services (){
 
 update (){
 	echo "${GREEN}[+] Updating and upgrading system!${NC}"
-	# configure automatic updates for apt
-	echo "APT::Periodic::Update-Package-Lists \"1\";
-	APT::Periodic::Download-Upgradeable-Packages \"0\";
-	APT::Periodic::AutocleanInterval \"0\";" > /etc/apt/apt.conf.d/10periodic
-	apt update -y && apt upgrade -y
+	dnf check-update
+	dnf upgrade
+	dnf clean packages
 }
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	apt install -y firefox ssh vim tree guake lynis rkhunter clamav clamav-daemon chkrootkit
-	# apt install -y libapache2-mod-security2 libapache2-mod-evasive
+	dnf install -y firefox ssh vim tree guake lynis rkhunter clamav clamav-daemon chkrootkit
+	# dnf install -y libapache2-mod-security2 libapache2-mod-evasive
 }
 
 while getopts "Au:d:gsn" options; do
