@@ -10,7 +10,7 @@
 # - SUID, SGID, sticky bit, world writable dirs
 # check /etc/passwd and remove unneeded accounts
 # disable kernel modules, modprobe?
-# SELinux and AppArmor?
+# SELinux and AppArmor? https://www.linuxcapable.com/how-to-enable-or-disable-apparmor-on-ubuntu-linux/
 # SSH
 # - idle timeout interval
 # - block ssh brute force attack
