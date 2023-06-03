@@ -10,7 +10,7 @@
 # - SUID, SGID, sticky bit, world writable dirs
 # check /etc/passwd and remove unneeded accounts
 # disable kernel modules, modprobe?
-# SELinux and AppArmor?
+# SELinux and AppArmor? https://docs.fedoraproject.org/en-US/quick-docs/getting-started-with-selinux/
 # SSH
 # - idle timeout interval
 # - block ssh brute force attack
