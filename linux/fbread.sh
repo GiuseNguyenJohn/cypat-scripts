@@ -296,7 +296,7 @@ update (){
 
 update_apps_services (){
 	echo "${GREEN}[+] Updating apps and services!${NC}"
-	dnf install -y firefox ssh vim tree guake lynis rkhunter clamav clamav-daemon chkrootkit
+	dnf install -y firefox ssh vim tree guake lynis rkhunter clamav clamav-daemon chkrootkit openssl
 	# dnf install -y libapache2-mod-security2 libapache2-mod-evasive
 }
 
