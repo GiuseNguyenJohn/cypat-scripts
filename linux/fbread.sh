@@ -15,7 +15,7 @@
 # - idle timeout interval
 # - block ssh brute force attack
 # iptables and ipchains?
-
+# automatic updates: https://docs.fedoraproject.org/en-US/quick-docs/autoupdates/
 
 
 ###########################################
